@@ -1,0 +1,54 @@
+package com.example.myapplication
+
+/**
+ * https://abhiappmobiledeveloper.medium.com/difference-between-implementation-api-compile-and-runtimeonly-in-gradle-dependency-55b70215d245
+ */
+class MultiModuleApStart {
+
+}
+
+Now try to understand Problem situation
+Suppose you have a library called MyLibrary that internally uses another library called InternalLibrary. Something like this:
+
+// 'InternalLibrary' module
+public class InternalLibrary {
+    public static String giveMeAString(){
+        return "hello";
+    }
+}
+// 'MyLibrary' module
+public class MyLibrary {
+    public String myString(){
+        return InternalLibrary.giveMeAString();
+    }
+}
+Suppose the MyLibrary build.gradle uses api configuration in dependencies{} like this:
+
+dependencies {
+    api project(':InternalLibrary')
+}
+You want to use MyLibrary in your code so in your app's build.gradle you add this dependency:
+
+dependencies {
+    implementation project(':MyLibrary')
+}
+Using the api configuration (or deprecated compile) you can access InternalLibrary in your application code:
+
+// Access 'MyLibrary' (granted)
+MyLibrary myLib = new MyLibrary();
+System.out.println(myLib.myString());
+// Can ALSO access the internal library too (but you shouldn't)
+System.out.println(InternalLibrary.giveMeAString());
+In this way the module MyLibrary is potentially "leaking" the internal implementation of something. You shouldn't (be able to) use that because it's not directly imported by you.
+
+The implementation configuration was introduced to prevent this. So now if you use implementation instead of api in MyLibrary:
+
+dependencies {
+    implementation project(':InternalLibrary')
+}
+you won’t be able to call InternalLibrary.giveMeAString() in your app code anymore.
+
+This sort of boxing strategy allows Android Gradle plugin to know that if you edit something in InternalLibrary, it must only trigger the recompilation of MyLibrary and not the recompilation of your entire app, because you don't have access to InternalLibrary.
+
+When you have a lot of nested dependencies this mechanism can speed up the build a lot. (Watch the video linked at the end for a full understanding of this)
+

@@ -36,17 +36,21 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
@@ -176,9 +180,10 @@ class MainActivity : ComponentActivity() {
 
                         /*GreetingPreview(viewModel)
                         TestStateVariable()*/
-                        StateFullComposable()
+                        /*StateFullComposable()
                         SnackbarExample()
-                        EditTextTypingListener(viewModel)
+                        EditTextTypingListener(viewModel)*/
+                        LocalComposableFunction(viewModel = viewModel)
                     }
                 }
             }
@@ -550,10 +555,38 @@ fun EditTextTypingListener(viewModel: MainViewModel) {
         viewModel.typingTextStateFlow.value = newValue
     })
 }
+var abc  = ""
+var localStringValue = staticCompositionLocalOf { abc }
 
 @Composable
-fun NewComposableFunction(viewModel: MainViewModel) {
+fun LocalComposableFunction(viewModel: MainViewModel) {
+    val xyz = "I am local"
+    CompositionLocalProvider(localStringValue provides xyz) {
+        DescendentComposable()
+    }
+    //NonDescendentComposable()
+}
 
+@Composable
+fun DescendentComposable(localValue: String = localStringValue.current) {
+    println("#LocalComposableFunction: inside DescendentComposable: localValue: $localValue")
+    Text(text = "I am inside DescendentComposable", modifier = Modifier.clickable {
+        //localStringValue. = ""
+    })
+    DescendentComposableTwo()
+}
+
+@Composable
+fun DescendentComposableTwo(localValue: String = localStringValue.current) {
+    println("#LocalComposableFunction: inside DescendentComposableTwo: ")
+    Text(text = "I am inside DescendentComposableTwo")
+}
+
+
+
+@Composable
+fun NonDescendentComposable(localValue: String = localStringValue.current) {
+    println("#LocalComposableFunction: inside NonDescendentComposable: localValue: $localValue")
 }
 
 
