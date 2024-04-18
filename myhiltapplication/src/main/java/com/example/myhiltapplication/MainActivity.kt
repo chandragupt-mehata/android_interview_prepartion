@@ -416,7 +416,7 @@ fun TestStateVariable() {
     }
 }
 
-// if name varriable will be normal object i.e. non state object, recomposition wont trigger
+// if name variable will be normal object i.e. non state object, recomposition wont trigger
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChildTestStateVariable(onNameChange: (String) -> Unit, name: String) {
@@ -556,7 +556,7 @@ fun EditTextTypingListener(viewModel: MainViewModel) {
     })
 }
 var abc  = ""
-var localStringValue = staticCompositionLocalOf { abc }
+var localStringValue = compositionLocalOf<String> { error("") }
 
 @Composable
 fun LocalComposableFunction(viewModel: MainViewModel) {

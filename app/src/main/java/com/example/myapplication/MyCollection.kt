@@ -103,7 +103,19 @@ fun main() {
         a + b
     }
     println("result is: $result")
+
+    val array1 = Array<Any>(5) {
+
+    }
+    array1[0] = ""
+    array1[0] = 2
+    val array2 = arrayOf(1, "")
+    val list1 = listOf(1, "")
+    val hof: fnStringString = { abc: String, x: String -> "" }
 }
+
+typealias fnStringString = (String, String) -> String
+
 
 fun passMe() {
     println("hello inside passMe")

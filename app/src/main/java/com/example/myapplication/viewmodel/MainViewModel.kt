@@ -85,6 +85,9 @@ import kotlin.system.measureTimeMillis
  *
  * 2. Then get method of viewModelprovider. Once it will receive viewModelstore object it will fetch viewmodel object from viewmodelstore map properties. if not
  * found then it will create new and save there.
+ *
+ * *****************************
+ * https://medium.com/@paritasampa95/difference-among-viewmodel-androidviewmodel-and-hiltviewmodel-8321719c1f4c
  */
 class MainViewModel: ViewModel() {
 

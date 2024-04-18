@@ -52,3 +52,66 @@ This sort of boxing strategy allows Android Gradle plugin to know that if you ed
 
 When you have a lot of nested dependencies this mechanism can speed up the build a lot. (Watch the video linked at the end for a full understanding of this)
 
+**************
+
+AAR file can be only created by library module. Either create new library module for existing project or
+convert existing project to library module after making related changes in gradle file.
+
+apk file can only be created when you build Android application module, but not Android library module, nor pure Java/Kotlin module. If you build one
+Android library module you will get a . aar file (Android archive file).
+If you see any apk file generated in library module then that The APK you're seeing (modulea-debug-androidTest.apk) is likely the debug APK
+for running the instrumentation tests defined in your library module. It's automatically generated as part of the build process to facilitate testing, but it
+doesn't contain the actual library code or resources meant for use in other applications.
+
+**********
+Ques: if i want to build a simple sdk which prints hello world, how can I create/develop
+Answer: Creating a simple SDK that prints "Hello, World!" can be a great starting point for understanding the basics of SDK development. Here's
+a step-by-step guide to help you create and develop such an SDK for Android:
+
+Create a New Android Library Module:
+
+Open Android Studio and create a new Android Library module in your project.
+Give it a suitable name, such as "HelloWorldSDK".
+Define the API:
+
+Decide on the interface that your SDK will expose. For this simple example, let's create a method called printHelloWorld().
+Implement the SDK:
+
+Inside your library module, create a class that will serve as the entry point for your SDK. This class will contain the printHelloWorld() method.
+Here's a basic example of what the class might look like:
+java
+Copy code
+public class HelloWorldSDK {
+    public static void printHelloWorld() {
+        System.out.println("Hello, World!");
+    }
+}
+Configure the Library Module:
+
+Ensure that your library module's build.gradle file specifies the appropriate configurations, such as the module type (library) and dependencies.
+Build the SDK:
+
+Build the SDK by selecting Build > Build Bundle(s) / APK(s) > Build Bundle(s) or Build APK(s) in Android Studio, or by running the Gradle task assembleRelease for
+your library module.
+Locate the AAR File:
+
+After the build process is complete, you can find the generated AAR file in the build/outputs/aar/ directory of your library module.
+Distribute the SDK:
+
+Share the generated AAR file with others who want to use your SDK. They can include it as a dependency in their Android projects.
+Use the SDK:
+
+To use the SDK in an Android project, add the AAR file as a dependency in the project's build.gradle file.
+After syncing the project, you can use the SDK by calling HelloWorldSDK.printHelloWorld() in your code.
+Remember that this is a very basic example. In a real-world scenario, you would likely need to consider additional factors such as error
+handling, documentation, versioning, and possibly more complex functionality. But this should give you a good starting point for creating a simple SDK.
+
+For publishing aar file to maven
+https://www.youtube.com/watch?v=h5awdxf4k2I
+
+https://medium.com/@ruchiram4/android-create-a-library-project-and-publish-to-local-maven-repository-2141621dff1c
+https://chat.openai.com/share/521a41c4-6397-4633-83c6-7368ae5878f8
+
+*****
+for java 17 amazon corretto
+https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/macos-install.html

@@ -34,6 +34,10 @@ package com.example.myapplication.test
  * and stubs to simulate behavior, while Robolectric allows for the simulation of Android components without the need for an emulator or connected
  * device. Mockito does not directly integrate with the Android SDK, whereas Robolectric provides seamless integration and simulation of Android components.
  */
+
+abstract sealed class abc {
+
+}
 class TestDoubles {
 
     val abc by lazy {

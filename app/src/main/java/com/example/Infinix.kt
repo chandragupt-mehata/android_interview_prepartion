@@ -31,6 +31,12 @@ infix fun String.infixA(str: String): String {
     return "result"
 }
 
+//compile error. Infix function should have at least one parameter.
+/*infix fun String.infixAWithoutArgument(): String {
+    println("inside infixA A")
+    return "result"
+}*/
+
 fun String.dummyFun(abc: Int): String {
     return ""
 }
