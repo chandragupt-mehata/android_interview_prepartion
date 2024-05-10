@@ -48,9 +48,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,11 +58,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.rememberNavController
 import com.example.myaidlserver.IMyAidlColorInterface
 import com.example.myhiltapplication.foregroundservice.MyForegroundService
-import com.example.myhiltapplication.model.Data
 import com.example.myhiltapplication.model.ResponseDTO
-import com.example.myhiltapplication.test.Person
+import com.example.myhiltapplication.navhost.AppNavHost
 import com.example.myhiltapplication.test.TestDiHere
 import com.example.myhiltapplication.test.TestDiIndependentHilt
 import com.example.myhiltapplication.test.TestDiIndependentTwoHilt
@@ -76,7 +74,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -128,9 +125,13 @@ class MainActivity : ComponentActivity() {
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         bindService()
         throwCoroutineException()
-        viewModel.checkCancellation()/*setContent {
-            AppNavHost(navController = rememberNavController())
-        }*/
+        viewModel.checkCancellation()
+        setComposableNavHost()
+        //setComposableComponent(viewModel)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setComposableComponent(viewModel: MainViewModel) {
         setContent {
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
@@ -187,6 +188,12 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setComposableNavHost() {
+        setContent {
+            AppNavHost(navController = rememberNavController())
         }
     }
 

@@ -88,6 +88,13 @@ import kotlin.system.measureTimeMillis
  *
  * *****************************
  * https://medium.com/@paritasampa95/difference-among-viewmodel-androidviewmodel-and-hiltviewmodel-8321719c1f4c
+ *
+ *
+ *
+ *
+ * ***********
+ * sunflower app
+ * https://github.com/android/sunflower/blob/master/app/src/main/java/com/google/samples/apps/sunflower/data/GardenPlantingRepository.kt
  */
 class MainViewModel: ViewModel() {
 

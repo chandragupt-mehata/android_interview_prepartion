@@ -112,6 +112,10 @@ fun main() {
     val array2 = arrayOf(1, "")
     val list1 = listOf(1, "")
     val hof: fnStringString = { abc: String, x: String -> "" }
+
+    val str = "Hi this is me. How are you."
+    val res = str.split(".").reversed().drop(1).joinToString(separator = ". ", postfix = ".")
+    println("result is: $res")
 }
 
 typealias fnStringString = (String, String) -> String

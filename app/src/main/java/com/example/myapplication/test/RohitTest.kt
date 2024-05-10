@@ -15,7 +15,39 @@ Example: "3796-1111-2222-1122" and "11/22" is valid. Return "Amex".
 */
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-fun main() {
+
+/**
+ * //vZio interview questions
+ * Please find the below question asked in  Vizio Interview :
+ * Past project experience ?
+ * What is MVVM?
+ * How we can make network call?
+ * In the case of multiple module project what will be the scope of singleton?
+ * What is inline, crossline in kotlin?
+ * How to check the type of generics at runtime?
+ * Why compose is better ?
+ * How to call coroutine from compose?
+ * What is side effect? How these side effect behave at the time of configuration changes?
+ * How to save UI state?
+ * In the case of system initiated process death how you can persist the data?
+ * Where you used Hot flow and cold flow in your project?
+ * Difference between Hot Flow and Cold flow?
+ * Difference between shared flow and state flow?
+ * Why data flow in compose is unidirectional?
+ * How you can share the data between two screen ?
+ * How view model handle configuration changes and system initiated process death?
+ * What is shared view model?
+ * How you implement shared view model for two screens?
+ * What is live data?
+ * What is singleton design pattern?
+ * Where you used singleton in your project?
+ * Asked follow up questions(scenario based) on the answers.
+ * problem solving question
+ * /* Given a sorted array I/p  = [-2,-1,0,2,3] output will be
+ * o/p = [0,1,4,4,9]
+ * with the lowest time complexity */
+ */
+fun main25() {
     val result = CardParser.validate("3796-9999-8888-1216", "12/56")
     println(result)
 }
@@ -68,3 +100,61 @@ object CardParser {
     }
 
 }
+
+fun main() {
+    println(
+        slot(
+            arrayOf(
+                intArrayOf(1, 3),
+                intArrayOf(2, 6),
+                intArrayOf(8, 10),
+                intArrayOf(15, 18)
+            )
+        ).toList().forEach {
+            println("value is: ${it[0]} and ${it[1]}")
+        }
+    )
+}
+fun slotT(input: Array<IntArray>): Array<IntArray> {
+    var resultArray = arrayListOf<IntArray>()
+    /*input.reduce(){
+            a,b ->
+// if(a[1] < b[0])
+        resultArray[0] = intArrayOf(a[0],a[1])
+    }*/
+    var temp = intArrayOf(Int.MAX_VALUE, Int.MIN_VALUE)
+    input.reduce {
+        a, b ->
+        if (a[1] < b[0]) {
+            temp = intArrayOf(a[0], a[1])
+            resultArray.add(temp)
+        } else {
+            temp = intArrayOf(minOf(a[0], b[0]), maxOf(a[1], b[1]))
+            //resultArray.add(intArrayOf(a[0], a[1]))
+        }
+        b
+    }
+    return input
+}
+
+fun slot(input: Array<IntArray>): Array<IntArray> {
+    val result = mutableListOf<IntArray>()
+    var start = input[0][0]
+    var end = input[0][1]
+
+    for (i in 1 until input.size) {
+        val interval = input[i]
+        if (interval[0] <= end) {
+            // Merge overlapping intervals
+            end = maxOf(end, interval[1])
+        } else {
+            // Add non-overlapping interval to the result
+            result.add(intArrayOf(start, end))
+            start = interval[0]
+            end = interval[1]
+        }
+    }
+    result.add(intArrayOf(start, end))
+    return result.toTypedArray()
+}
+
