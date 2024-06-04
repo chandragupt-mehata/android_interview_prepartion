@@ -3,8 +3,10 @@ package com.example.test.codingexcercise.collection
 fun main() {
     val list = listOf(1, 2, 0, 3, 0, 2, 4, 2, 5)
     val groupByListOne = list.groupBy {
-        println("inside: it: $it")
+        //println("inside: it: $it")
         it
+    }.map {
+        println("inside: it: $it")
     }
     println(groupByListOne)
 

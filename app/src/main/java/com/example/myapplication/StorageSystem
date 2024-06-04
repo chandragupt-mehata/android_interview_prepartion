@@ -1,0 +1,62 @@
+https://chatgpt.com/c/7c61d64d-d59f-4d15-99c5-c7d93aee43c3
+
+External Storage :
+Shared External Storage: Broadly accessible by multiple apps.
+Scoped External Storage: Private and app-specific within the external storage framework.
+Removable Media: Additional external storage that may or may not be present depending on user configuration.
+Media Store: Structured access to media files stored on the device.
+
+Note: In Android's storage context, removable media like SD cards and USB drives can be used for both scoped external storage and traditional external storage, depending on how developers choose to utilize them.
+
+
+Internal storage vs Scoped External Storage
+
+
+Internal Storage
+Privacy and Security:
+
+Private to the App: Files stored in internal storage are private to the app and cannot be accessed by other apps or the user.
+Path Example: /data/data/com.example.yourapp/files/ or using getFilesDir().
+Permissions: No special permissions are required to read or write to internal storage.
+Persistence:
+
+Persistent Data: Data stored in internal storage remains until the app is uninstalled.
+Cache Storage: There is also a cache directory in internal storage (getCacheDir()), which stores temporary files that the system can delete to free up space.
+Accessibility:
+
+App-Only Access: Only the app that created the files can access them, ensuring high security and privacy.
+Storage Location:
+
+Internal Memory: Data is stored in the device’s internal memory, separate from external storage.
+Scoped External Storage
+Privacy and Security:
+
+App-Specific Directories: Scoped external storage provides app-specific directories on external storage that are private to the app.
+Path Examples: /storage/emulated/0/Android/data/com.example.yourapp/files/ for general files and /storage/emulated/0/Android/data/com.example.yourapp/cache/ for cache files.
+Permissions: No special permissions are required to read or write to these directories.
+Persistence:
+
+App-Specific Data: Data in these directories is preserved until the app is uninstalled. Cache files can be cleared by the system when space is needed.
+Accessibility:
+
+App-Only Access: Although the data is stored on external storage, it is still only accessible to the app that created it, ensuring privacy.
+Shared Storage: For shared data (like media files) that needs to be accessible to other apps, you must use the Media Store API and request appropriate permissions.
+Storage Location:
+
+External Storage Partition: Data is stored on the device’s external storage partition, which can be part of the internal storage partitioned to act as external storage or on a removable SD card.
+Key Differences
+Access Control:
+
+Internal Storage: Completely private to the app; not accessible by any other app or user.
+Scoped External Storage: Private to the app within the external storage context; not accessible by other apps but stored on external storage media.
+Use Cases:
+
+Internal Storage: Suitable for sensitive data and app configuration files that should not be exposed outside the app.
+Scoped External Storage: Suitable for less sensitive data that benefits from being on external storage, such as large media files and user-generated content.
+Storage Medium:
+
+Internal Storage: Uses the device’s internal memory.
+Scoped External Storage: Uses the external storage partition, which can be part of the internal memory or an external SD card.
+
+Al though Scoped external storage can be mounted on external SD card but that's still private to app only. It can not be accessed by other app.
+

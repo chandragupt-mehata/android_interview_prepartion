@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
             if (it is Button) {
                 it.text = "I am clicked"
             }
+            Thread.sleep(10000)
         }
 
         findViewById<Button>(R.id.button2).setOnClickListener {
@@ -45,6 +46,27 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+}
+
+open class TheInterface1 {
+    open fun xc() {
+
+    }
+}
+
+open class TheInterface {
+    fun doIt() {
+        object : TheInterface1() { 
+            fun doIc() {
+
+            }
+
+            override fun xc() {
+                super.xc()
+            }
+        }
+
     }
 }
 

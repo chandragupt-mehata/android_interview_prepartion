@@ -125,7 +125,7 @@ class MainActivity : ComponentActivity() {
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         bindService()
         throwCoroutineException()
-        viewModel.checkCancellation()
+        viewModel.checkWithContextBehaviourOnBackPressed()
         setComposableNavHost()
         //setComposableComponent(viewModel)
     }

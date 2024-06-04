@@ -66,7 +66,7 @@ fun SecondComposable(navController: NavHostController) {
     }
 
     Button(onClick = {
-        navController.navigate(Screen.Third.name)
+        navController.navigate(Screen.THIRD.name)
     }) {
         Text(text = "Navigate to third composable using nav controller")
     }

@@ -6,15 +6,19 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 suspend fun fetchData(): String {
+    println("fetching data")
     return suspendCancellableCoroutine { continuation: Continuation<String> ->
         // Simulating an asynchronous operation with a callback
+        println("inside suspendCancellableCoroutine")
         fetchFromNetwork { result, error ->
+            println("returning final result through continuation object")
             if (error != null) {
                 continuation.resumeWithException(error)
             } else {
                 continuation.resume(result!!)
             }
         }
+        println("end of suspendCancellableCoroutine")
     }
 }
 
@@ -25,6 +29,7 @@ fun higherOrderFun(func: () -> String): String {
 fun fetchFromNetwork(callback: (String?, Throwable?) -> Unit) {
     // Simulating an asynchronous operation
     val success = true // Set to false to simulate an error
+    println("inside fetchFromNetwork returning result through callback")
     if (success) {
         callback("Fetched data", null)
     } else {

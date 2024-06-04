@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.RuntimeException
 import javax.inject.Singleton
 
@@ -109,6 +110,32 @@ class MainViewModel : ViewModel() {
             }
             delay(2000)
             //this.cancel()
+        }
+    }
+
+    fun checkWithContextBehaviourOnBackPressed() {
+        viewModelScope.launch(Dispatchers.IO) {
+            while (true) {
+                println("view model: checkWithContextBehaviourOnBackPressed: viewModelScope $bgCounter and isActive: $isActive")
+                delay(1000)
+                bgCounter++
+            }
+        }
+        viewModelScope.launch {
+            CoroutineScope(Dispatchers.IO).launch {
+                while (true) {
+                    println("view model: checkWithContextBehaviourOnBackPressed: independent coroutine $bgCounter and isActive: $isActive")
+                    delay(1000)
+                    bgCounter++
+                }
+            }
+            withContext(Dispatchers.IO) {
+                while (true) {
+                    println("view model: checkWithContextBehaviourOnBackPressed: withContext $bgCounter and isActive: $isActive")
+                    delay(1000)
+                    bgCounter++
+                }
+            }
         }
     }
 

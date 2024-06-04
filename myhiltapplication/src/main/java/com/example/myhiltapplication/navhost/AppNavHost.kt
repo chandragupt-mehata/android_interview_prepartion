@@ -17,7 +17,7 @@ fun AppNavHost(startDestination: String = Screen.FIRST.name, navController: NavH
         composable(route = Screen.SECOND.name) {
            SecondComposable(navController)
         }
-        composable(route = Screen.Third.name) {
+        composable(route = Screen.THIRD.name) {
             ThirdComposable(navController)
         }
     }

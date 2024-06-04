@@ -102,7 +102,13 @@ object CardParser {
 }
 
 fun main() {
-    println(
+    for (i in 1..1000000) {
+        val thread = Thread(Runnable {
+
+        })
+        thread.start()
+    }
+    /*println(
         slot(
             arrayOf(
                 intArrayOf(1, 3),
@@ -113,7 +119,7 @@ fun main() {
         ).toList().forEach {
             println("value is: ${it[0]} and ${it[1]}")
         }
-    )
+    )*/
 }
 fun slotT(input: Array<IntArray>): Array<IntArray> {
     var resultArray = arrayListOf<IntArray>()
