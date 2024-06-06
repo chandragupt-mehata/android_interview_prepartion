@@ -113,6 +113,10 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    /**
+     * on back pressed, all jobs belonging to view model scope will get cancelled because viewmodelscope gets cancelled
+     * when one presses the back key.
+     */
     fun checkWithContextBehaviourOnBackPressed() {
         viewModelScope.launch(Dispatchers.IO) {
             while (true) {

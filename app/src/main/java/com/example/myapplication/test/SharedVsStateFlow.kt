@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-
+// https://chatgpt.com/share/218d22ea-cbca-499d-8e3d-dbfe0b0da8af
 fun main() {
     runBlocking {
         cancelBlockingCoroutineFlow()

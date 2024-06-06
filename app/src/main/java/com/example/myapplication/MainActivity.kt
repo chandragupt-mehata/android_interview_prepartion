@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.coroutine.doAsyncWorkWithSuspendCancellableCoroutine
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.fragment.FragmentA
 import com.example.myapplication.test.BuilderParentClass
@@ -86,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         testSuspendNetworkOperation(viewModel)
         testParallelDecomposition(viewModel)
         testThreadExecuters(viewModel)
+        //testSuspendCancellableCoroutineAndANR()
 
         /*setContent {
             MyApplicationTheme {
@@ -117,6 +119,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }*/
+    }
+
+    private fun testSuspendCancellableCoroutineAndANR() {
+        lifecycleScope.launch {
+            doAsyncWorkWithSuspendCancellableCoroutine()
+            println("after doAsyncWorkIndependent end, testSuspendCancellableCoroutineAndANR also ends")
+        }
     }
 
     private fun testThreadExecuters(viewModel: MainViewModel) {
