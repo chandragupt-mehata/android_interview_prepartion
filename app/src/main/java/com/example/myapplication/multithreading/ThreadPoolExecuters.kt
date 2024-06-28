@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.multithreading
 
 /**
  * Thread pools, thread executors, thread scheduling, and handlers are all related to managing concurrency
@@ -26,6 +26,12 @@ package com.example.myapplication
  * In summary, thread pools and executors provide a way to manage and execute tasks concurrently using multiple threads efficiently. Thread scheduling is
  * handled by the operating system's scheduler, which determines the order of thread execution. Handlers, on the other hand, facilitate communication and
  * task scheduling within an application, particularly in the context of Android development.
+ */
+
+/**
+ * A Looper in Android is used to manage a thread's message queue, allowing messages to be passed to handler one at a time in the order they were added.
+ * Once handler finished his task via runnable, looper fetches next message from message queue and pass it to handler.
+ *
  */
 
 // question: Lets say I am having 100 task which I want to execute via a thread pool having a capacity of 10 threads. How to write a proper code in kotlin

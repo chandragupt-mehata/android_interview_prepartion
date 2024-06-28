@@ -1,4 +1,4 @@
-package com.example.myapplication.test
+package com.example.myapplication.coroutine
 
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
@@ -7,9 +7,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
 import java.lang.RuntimeException
-import java.util.concurrent.Executor
 import java.util.concurrent.Executors
-import java.util.concurrent.ThreadPoolExecutor
 
 fun main() {
     val executer = Executors.newFixedThreadPool(10).asCoroutineDispatcher()

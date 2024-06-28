@@ -99,3 +99,32 @@ object KeyGenerator2 {
         return keyStore.getKey(SUB_KEY_ALIAS, null).toString()
     }
 }
+
+/**
+ * can we save data to android keystore or it's only for generating key ?
+ *
+ * ChatGPT
+ * The Android Keystore system is primarily designed to securely generate and store cryptographic keys, but it doesn't
+ * directly store arbitrary data. However, you can use the Keystore to securely store keys and then use those keys to encrypt and decrypt data stored
+ * elsewhere, such as in SharedPreferences or a database.
+ *
+ * Here's a high-level overview of how you can achieve this:
+ *
+ * Generate a Key in the Keystore:
+ * Generate an encryption key and store it securely in the Keystore.
+ *
+ * Encrypt Data:
+ * Use the encryption key from the Keystore to encrypt the data you want to store securely.
+ *
+ * Store Encrypted Data:
+ * Save the encrypted data in SharedPreferences or any other storage location.
+ *
+ * Decrypt Data:
+ * When you need to access the data, retrieve it from the storage location, decrypt it using the key from the Keystore, and use it as needed.
+ *
+ *
+ * it meant - we can not save data into Android keystore. short answer
+ *
+ * ChatGPT
+ * Correct, you cannot save arbitrary data directly into the Android Keystore. It is used to securely generate and store cryptographic keys.
+ */

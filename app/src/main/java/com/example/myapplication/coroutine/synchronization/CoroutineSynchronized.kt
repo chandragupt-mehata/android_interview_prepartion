@@ -1,4 +1,4 @@
-package com.example.myapplication.test
+package com.example.myapplication.coroutine.synchronization
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

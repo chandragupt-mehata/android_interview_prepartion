@@ -56,6 +56,13 @@ fun main() {
     })
 }
 
+val lambda: (String) -> String = {ac: String ->
+    {}
+    ""
+    {""}
+    ""
+}
+
 fun higherOrderFn(list: List<String>, lambda: (List<PersonTest>) -> List<PersonTest>) {
     val personList = mutableListOf<PersonTest>()
     list.forEachIndexed { index, value ->

@@ -1,0 +1,25 @@
+Firebase A/B Testing is a feature that allows developer to compare different variation of app to see
+which performs better in terms of User Engagement, retention and other metrices.
+
+Key Features
+Experiment Creation:
+
+You can create experiments to test different variations of app features, user interface changes, messaging, etc.
+Randomized User Segments:
+
+Users are randomly assigned to different groups (control and variant) to ensure unbiased results.
+Integration with Remote Config:
+
+Easily change app behavior and appearance without deploying a new version, by using Firebase Remote Config to define experiment parameters.
+Integration with Firebase Analytics:
+
+Use Firebase Analytics to measure the impact of different variations on user behavior and other key metrics.
+Real-time Results:
+
+Monitor the performance of each variation in real-time, allowing for quick adjustments or termination of experiments if necessary.
+Statistical Significance:
+
+Firebase A/B Testing uses statistical analysis to determine the significance of the results, helping you make confident decisions based on the data.
+Personalization:
+
+Personalize your app experience for different user segments based on the results of your A/B tests.

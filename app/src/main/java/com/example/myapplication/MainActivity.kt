@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         testSuspendNetworkOperation(viewModel)
         testParallelDecomposition(viewModel)
         testThreadExecuters(viewModel)
+        testViewModelSavedInstance(viewModel)
         //testSuspendCancellableCoroutineAndANR()
 
         /*setContent {
@@ -140,6 +141,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun testSuspendNetworkOperation(viewModel: MainViewModel) {
         viewModel.getResult()
+    }
+
+    private fun testViewModelSavedInstance(viewModel: MainViewModel) {
+        //viewModel.verifySavedInstanceFlow()
     }
 
     private fun testStateFlowLiveDataInBackground(

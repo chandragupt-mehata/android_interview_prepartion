@@ -17,6 +17,57 @@ Example: "3796-1111-2222-1122" and "11/22" is valid. Return "Amex".
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 
 /**
+ * Dheeraj
+ *
+ * amex first round questions
+ * Questions on past experience
+ * Advantage of MVI over MVVM,
+ * explain full process how jetpack compose would interact with viewmodel & repository
+ * how to minimise recomposition in jetpack compose
+ * how to control situation where state updates trigger recompositions, especially in scenarios with rapid state changes
+ * how compose was efficient in your last project
+ * how to expose data to compose
+ *
+ * what is immutability in Kotlin ?
+ * Immutability in Kotlin refers to the concept where the state of an object cannot be modified after it has been created. Immutability is important for
+ * ensuring that objects remain consistent and predictable, especially in concurrent or parallel programming.
+ * In Kotlin, immutability can be achieved through the use of val for read-only properties and immutable data structures. Here are some key aspects of
+ * immutability in Kotlin:
+ *
+ * how immutability affect thread safety
+ * how immutability affect concurrency
+ * Immutability plays a crucial role in ensuring thread safety. When an object is immutable, its state cannot change after it is created.
+ * This has several beneficial implications for concurrent programming:
+ *
+ * No Need for Synchronization
+ * No Race Conditions: Since immutable objects cannot be modified, there is no risk of race conditions where multiple threads attempt to read and
+ * write shared data simultaneously.
+ *
+ * kotlin
+ * Copy code
+ * val immutableList = listOf(1, 2, 3)
+ * // No matter how many threads access this list, it will always be the same.
+ * Simplified Concurrency
+ * Simplified Concurrency: With immutable objects, you don't need to use complex synchronization mechanisms (like locks or semaphores) to protect shared
+ * state, simplifying code and reducing the potential for deadlocks and other concurrency issues.
+ *
+ * kotlin
+ * Copy code
+ * class ImmutablePerson(val name: String, val age: Int)
+ *
+ * val person = ImmutablePerson("Alice", 30)
+ * // This instance of ImmutablePerson can be safely shared between threads.
+ * Safe Sharing of Data
+ * Safe Sharing of Data: Immutable objects can be freely shared between threads without the risk of one thread altering the state in a way that affects
+ * other threads. This leads to more predictable and reliable multi-threaded code.
+ *
+ * how to make data class mutable
+ * when to go for mutable class and when for immutable
+ * usage of object keyword in Kotlin
+ * cases where using object may not be suitable
+ */
+
+/**
  * //vZio interview questions
  * Please find the below question asked in  Vizio Interview :
  * Past project experience ?
@@ -47,6 +98,86 @@ Example: "3796-1111-2222-1122" and "11/22" is valid. Return "Amex".
  * o/p = [0,1,4,4,9]
  * with the lowest time complexity */
  */
+
+/**
+ * Aakash Kumar
+ *
+ * EXPEDIA INTERNAL INTERVIEW QUESTIONS:
+ * Intro
+ * Recent technologies that you have used in your projects?
+ * Do you have experience with compose?
+ * Do you have experience with GraphQL? we request in form of query to get JSON response from Graph QL service
+ * Did you use Scrum or Kanban?
+ * Did you have any estimation meetings?
+ * What other estimation techniques do you know?
+ * Do you know about T-shirt sizing?
+ * What version control system did you use?
+ * what type of branches did you use?
+ * Can you explain the difference between Git Rebase and the Git Merge?
+ * What was the process for application to release to the play store?
+ * Did you use any release branch?
+ * Did you use any CI/CD system?
+ * Have you heard about Github Actions? Or did you use it in a personal project?
+ * Why is the pull request important and why are we using it?
+ * What would you do in the case where you have a pull request and there is a comment which ask you to change something and you disagree with it?
+ * What were your main steps when you were reviewing code? how did you achieve it? What did you look for?
+ * How did you approach in understanding the pull request and making sure it does what it should do?
+ * Did you use KTlint?
+ * Can you name a few Code Analyzer Tools?
+ * Did you write unit tests?
+ * What makes some code harder to test than other?
+ * What is dependency injection?
+ * What is solid principle?
+ * Dependency injection have any relation to testing or to the solid principle?
+ * What design patterns do you know?
+ * Can you describe me, the observer design pattern?
+ * Can you describe the MVVM architecture?
+ * Does the MVVM architecture have a reference to the view?
+ * What have you used to do multithreading?
+ * How do you launch a coroutine?
+ * What is the advantage of Coroutines over Threads?
+ * How does cancellation work in Coroutines?
+ * What is the purpose of the supervisor job?
+ * What is the difference between Cold Flow and the hot hot flow?
+ * How can you combine multiple Coroutines?
+ * what is the advantage of Kotlin over Java?
+ * What does it mean that our variable is immutable?
+ * What are scoped functions?
+ * What is the difference between on Enum and the Sealed class?
+ * What is a data class?
+ * What is the context in Android
+ * What are the types of Context? In Android, Context is an abstract class that provides access to application-specific resources and classes,
+ * as well as up-calls for application-level operations such as launching activities, broadcasting, and receiving intents, etc.
+ *
+ * Have you heard about services?
+ * Why are we using a broadcast receiver?
+ * What is the reason for memory leaks? Objects which are no longer required present in Heap and Garbage Collector unable to remove them because of some reference they hold
+ * Do you know any tools you can use to check memory leaks.
+ * What is code coverage?
+ * Do you think high coverage is enough to say that your application is well tested?
+ * Can you explain the difference between a unit test and integration test?
+ * Did you write any integration test in the past?
+ * In any particular project, did you write any UI test?
+ * What's the difference between a view based and declarative framework?
+ * What is the role of the modifier?
+ * What is the recomposition?
+ * how can you reduce the number of recompositions?
+ * What is the concept of side effect in jetpack compose?
+ * Have you heard about lazy composition?
+ * What is a composition local? Can you give some useful examples?
+ * Can you give some examples of how to optimise jetpack compose code?
+ * What is happening when an application is first starting.
+ * Application is starting very slowly. What do you suspect is the problem? How would you resolve?
+ * What is the android manifest file? Why are you using it?
+ * Can you have multiple manifest file?
+ * Can you explain deep linking?`
+ * Have you heard about AB testing?
+ * How do you measure your performance in the application?  what tools can you use?
+ * Did you use work manager?
+ *
+ * chris harman
+ */
+
 fun main25() {
     val result = CardParser.validate("3796-9999-8888-1216", "12/56")
     println(result)

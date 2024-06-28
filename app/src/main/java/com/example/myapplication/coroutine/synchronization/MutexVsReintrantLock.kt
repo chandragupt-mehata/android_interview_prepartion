@@ -1,4 +1,4 @@
-package com.example.myapplication.coroutine
+package com.example.myapplication.coroutine.synchronization
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -23,7 +23,7 @@ import kotlin.time.measureTime
  * Above definition looks true for mutex vs synchronized and reintrant lock vs synchronized. But both synchronized and reintrant looks working as
  * same with suspended function they allow other coroutine to perform task if locked coroutine will go into suspended state.
  * Its fine here since all coroutine are drawn from single thread and they would be increasing counter one at a time. But main thing is they are not
- * blocking underlying thread. One can test it with multiple coroutine drawn by multiple thread where with mutex it's possible that multiple thread's
+ * blocking underlying thread. One can test it with multiple coroutine drawn by multiple thread where with mutex it's possible that multiple(different) thread's
  * coroutine can increase the counter at same time which will not give expected result. But with mutex that will give expected result. And
  * good thing is that if other thread's coroutine will try to access that it wont allow until that will go into suspended state.
  */

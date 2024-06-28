@@ -1,6 +1,22 @@
 package com.example.myapplication
 
 /**
+ * https://chatgpt.com/share/7f8d1afa-dc6b-4d57-8e6b-751d37981075
+ * https://proandroiddev.com/serializable-or-parcelable-why-and-which-one-17b274f3d3bb
+ *
+ * Before comparing Java Serializable and Android Pacelable together, let’s find the answer to this question. “In case of transferring objects between Android
+ * components, why do we have to convert them to the Serializable or Parcelable?”
+ *
+ * When an application is in the background, its process may be killed by the OS in case of low memory. And by returning back the
+ * user to the app, the OS creates a new process for the application. Therefore, with passing an instance of the object to the Bundle, when the process is
+ * changed, the reference of the object won’t be in the new process and it wouldn’t be possible to use that object. Also, in the case of PendingIntents, if the
+ * owing application is killed, the PendingIntent itself will remain usable from other processes that have been given it.
+ * So, the OS instead of saving the reference of an object must save its values and it would be possible just by converting that object to the Parcelable or
+ * Serializable.
+ */
+
+
+/**
  *
  * In Android, serialization is the process of converting an object into a format that can be easily stored,
  * transmitted, or reconstructed. The Serializable interface in Java and Android is used to mark a class as
@@ -66,5 +82,65 @@ package com.example.myapplication
  * efficiently packaging and transporting the data. The specific optimizations in Parcel make it more suitable for
  * Android's use cases, especially when passing data between components like activities or services.
  */
+
+/**
+ * It meant when we pass object across diff component that would be copy of original instance or you may say that that would be information
+ * of that object. And using that information new object will be created in receiving component. Right or wrong ?
+ * ChatGPT
+ * When you pass an object across different components in Android, such as activities or services, the object itself is not passed directly. Instead,
+ * a copy or information representing that object is passed. Here’s a breakdown of how this process typically works:
+ *
+ * Passing Objects Between Components
+ * Serialization or Parcelization:
+ *
+ * Before passing an object through an Intent or storing it in a Bundle (e.g., during activity transitions), the object is serialized
+ * (if implementing Serializable) or parcelized (if implementing Parcelable).
+ * Serialization or parcelization converts the object into a format that can be easily transmitted across component boundaries (like between
+ * different processes or during system events).
+ * Object Representation:
+ *
+ * What gets passed between components is not the original object instance itself, but rather a serialized representation of its state.
+ * This representation includes the object's data fields and their values, which are encoded into a byte stream (for serialization) or structured data
+ * (for parcelization).
+ * Reconstruction in Receiving Component:
+ *
+ * In the receiving component (e.g., another activity receiving data via an Intent), the serialized data is used to reconstruct a new instance of the object.
+ * This new instance has the same state as the original object when it was serialized or parcelized.
+ * Key Points
+ * State Transfer: The primary purpose of serialization or parcelization is to transfer the state (data) of an object between components, not
+ * the object instance itself.
+ * Efficiency: By transmitting only the necessary data (object state), serialization and parcelization optimize memory usage and improve performance
+ * compared to passing entire object instances.
+ * Implementation Requirement: Objects must implement Serializable or Parcelable for the Android framework to serialize or parcelize them effectively.
+ * Example Scenario
+ * kotlin
+ * Copy code
+ * @Parcelize
+ * data class User(val name: String, val age: Int) : Parcelable
+ *
+ * // Sending activity
+ * val user = User("Alice", 25)
+ * val intent = Intent(this, ReceiverActivity::class.java)
+ * intent.putExtra("user", user)
+ * startActivity(intent)
+ *
+ * // Receiving activity
+ * val receivedUser = intent.getParcelableExtra<User>("user")
+ * In this example, User implements Parcelable, so when user is passed via an Intent, Android serializes it into a Parcel.
+ * In the receiving activity (ReceiverActivity), receivedUser is reconstructed as a new User object with the same data as the original user object.
+ * Conclusion
+ * When passing objects between different components in Android, serialization or parcelization ensures that the state (data) of the object is transferred
+ * accurately while maintaining efficiency and performance. The receiving component reconstructs a new instance of the object based on the
+ * serialized or parcelized data, rather than directly receiving the original object instance. This approach helps maintain application state
+ * consistency and facilitates seamless inter-component communication in Android applications.
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
 class SerializableVsParcellable {
 }

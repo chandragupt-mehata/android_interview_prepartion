@@ -131,3 +131,89 @@ package com.example.myapplication.security
  */
 class EncryptionSecurity {
 }
+
+/**
+ * from very high level like whether it follows asymetric or symetric or both ? What's diff in ssl vs tls
+ * or both follows same process from high level point of view
+ *
+ * ChatGPT
+ * From a high-level point of view, both SSL (Secure Sockets Layer) and TLS (Transport Layer Security)
+ * use a combination of asymmetric and symmetric encryption, but there are differences in their processes and security features. Here's an overview:
+ *
+ * High-Level Encryption Process
+ * Asymmetric Encryption:
+ *
+ * Used during the initial handshake to securely exchange keys.
+ * Involves a pair of keys: a public key and a private key.
+ * The public key is used to encrypt data, and the private key is used to decrypt it.
+ * Symmetric Encryption:
+ *
+ * Used for encrypting the actual data transferred during the session.
+ * Involves a single key that both parties use to encrypt and decrypt data.
+ * This key is securely exchanged using asymmetric encryption during the handshake.
+ * SSL and TLS Process (High-Level)
+ * SSL
+ * Handshake:
+ *
+ * Client and server exchange hello messages to establish connection parameters.
+ * Server sends its certificate to the client, which contains the server's public key.
+ * Client generates a pre-master secret, encrypts it with the server's public key, and sends it to the server.
+ * Both client and server generate the session keys from the pre-master secret.
+ * Session Key Exchange:
+ *
+ * The session key, derived from the pre-master secret, is used for symmetric encryption of data.
+ * SSL supports various cipher suites, some of which are now considered insecure.
+ * Data Transfer:
+ *
+ * Data is encrypted using the session key for confidentiality.
+ * Message authentication is performed using weaker hash functions like MD5 or SHA-1.
+ *
+ * ********
+ *
+ * TLS
+ * Handshake:
+ *
+ * Similar to SSL, but with improvements in the exchange process to prevent certain types of attacks.
+ * Server and client exchange hello messages, and the server sends its certificate.
+ * The client and server negotiate the best cipher suite to use.
+ * The client generates a pre-master secret, encrypts it with the server's public key, and sends it to the server.
+ * Both client and server derive the session keys from the pre-master secret.
+ * Session Key Exchange:
+ *
+ * The session key is used for symmetric encryption of data.
+ * TLS supports modern, more secure cipher suites.
+ * TLS 1.3 simplifies the handshake process and removes support for older, less secure cipher suites.
+ * Data Transfer:
+ *
+ * Data is encrypted using the session key for confidentiality.
+ * Message authentication is performed using stronger hash functions like SHA-256.
+ * TLS 1.3 uses authenticated encryption with associated data (AEAD) cipher suites, enhancing security.
+ * Differences Between SSL and TLS (High-Level)
+ * Handshake Improvements:
+ *
+ * TLS has a more secure and efficient handshake process compared to SSL.
+ * TLS 1.3 further reduces the number of round trips required to establish a secure connection.
+ * Cipher Suites:
+ *
+ * TLS supports more secure and modern cipher suites compared to SSL.
+ * TLS 1.3 exclusively uses AEAD cipher suites, enhancing security.
+ * Hash Functions:
+ *
+ * TLS uses stronger hash functions for message authentication, whereas SSL used weaker ones like MD5 and SHA-1.
+ * Protocol Flexibility:
+ *
+ * TLS is designed to be more extensible and adaptable to new security practices and algorithms.
+ * Security Features:
+ *
+ * TLS includes better protection against certain types of attacks (e.g., downgrade attacks, padding oracle attacks).
+ * TLS 1.3 removes obsolete and insecure features found in earlier versions of TLS and SSL.
+ * In summary, both SSL and TLS use a combination of asymmetric and symmetric encryption, but TLS provides significant improvements in
+ * security, efficiency, and flexibility over SSL.
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */

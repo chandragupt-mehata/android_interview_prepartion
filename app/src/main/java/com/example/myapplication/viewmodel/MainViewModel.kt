@@ -3,9 +3,10 @@ package com.example.myapplication.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.TaskRunnableFutureWait
+import com.example.myapplication.multithreading.TaskRunnableFutureWait
 import com.example.myapplication.coroutine.await
 import com.example.myapplication.data.repo.AppRepositoryImpl
 import kotlinx.coroutines.CoroutineScope
@@ -59,19 +60,32 @@ import kotlin.system.measureTimeMillis
  * https://medium.com/@milindamrutkar/the-internals-of-viewmodel-and-surviving-configuration-changes-d62f0c871c30#:~:text='ViewModel'%20survives%20configuration%20changes%20due,the%20new%20'Activity'%20instance.
  * When we create a ‘ViewModel’ instance, we usually use ‘ViewModelProvider’.This ‘ViewModelProvider’ uses a ‘ViewModelStore’ to retain ‘ViewModel’ instances.
  * val viewModel = ViewModelProvider(this).get(MyViewModel::class.java)
- * this -> ViewmodelStoreOwner(one method getViewModel) -> ComponentActivity
+ * this is ViewModelStoreOwnerInterface's implementation -> ViewmodelStoreOwner(one method getViewModel) -> ComponentActivity
+ *
+ * Once we have instance of viewmodel provider, Now let’s get our viewmodel object. As we can see, we simply just called the get(arg) method with
+ * the desired viewmodel class reference and our viewmodel object was created. This method gets the canonical name of the viewmodel class, creates
+ * a key by appending DEFAULT_KEY then it calls the another get function which takes the key and viewmodel class reference. This method checks
+ * the viewmodel instance in the viewmodel store first. If the viewmodel instance is there in the viewmodelstore then it simply returns that instance.
+ * If viewmodel instance is not there then it uses the factory to create the new instance and saves that instance in viewmodel store and then it
+ * return the viewmodel instance.
+ * So as we saw viewmodelprovider internally uses viewmodelstore container to get the view model object. And view model store object will get retrieved
+ * through lifecycle component who implements that interface.
+ *
+ * In short --
  * In the ‘get’ method, ‘ViewModelProvider’ first tries to get an existing ‘ViewModel’ from the ‘ViewModelStore’ using the class name as the key.
  * If a ‘ViewModel’ with this key doesn’t exist, it creates a new one using the provided ‘Factory’, then stores it in the ‘ViewModelStore’.
  *
+ *
+ * Now configuration change management -
  * The ‘ViewModelStore’ is a simple container that holds ‘ViewModels’. It’s associated with the lifecycle of an ‘Activity’ or ‘Fragment’ and is retained
  * during configuration changes.
  *
- * ****************
- *
+ * In details: (Now configuration change management)
  * 1. ViewModelProvider(this).get(MainViewModel::class.java)
  * public constructor(
  *         owner: ViewModelStoreOwner
  *     ) : this(owner.viewModelStore, defaultFactory(owner), defaultCreationExtras(owner))
+ *
  * owner.viewModelStore -> public ViewModelStore getViewModelStore() {
  *         if (getApplication() == null) {
  *             throw new IllegalStateException("Your activity is not yet attached to the "
@@ -95,8 +109,49 @@ import kotlin.system.measureTimeMillis
  * ***********
  * sunflower app
  * https://github.com/android/sunflower/blob/master/app/src/main/java/com/google/samples/apps/sunflower/data/GardenPlantingRepository.kt
+ *
+ * ***********************
+ * MVVM
+ * Model-View-ViewModel (MVVM) is a software architectural pattern commonly used in application development to separate the concerns of the
+ * user interface (UI) from the business logic and data. It facilitates a clean separation of concerns, making the
+ * code more maintainable and testable. Here’s a breakdown of the three main components:
+ *
+ * Model:
+ * Represents the data and business logic of the application.
+ * Encapsulates the data and defines the business rules for how the data can be changed and manipulated.
+ * Typically consists of data classes, business logic, and data access components (like repositories or data sources).
+ * View:
+ * Represents the UI of the application.
+ * Displays the data and sends user actions to the ViewModel.
+ * Should contain minimal logic, mainly for presentation purposes.
+ * In Android development, this could be Activities, Fragments, or XML layouts.
+ * ViewModel:
+ * Acts as a mediator between the View and the Model.
+ * Handles the presentation logic and prepares data for the View.
+ * Keeps track of the UI state and exposes it to the View.
+ * Listens to changes in the Model and updates the View accordingly.
+ * In Android, ViewModels are lifecycle-aware, which means they survive configuration changes like screen rotations.
+ *
+ * Combining MVVM with Clean Architecture involves structuring the code to include the principles of both patterns. This combination leverages the
+ * strengths of MVVM for UI-related concerns and Clean Architecture for a broader separation of concerns across the entire application.
+ * If we keep on putting logic inside view model it will be blasted at one time. So clean architecture makes view model as light weight by introducing use
+ * case along with other classes in domain layer.
+ *
+ * Layered Approach:
+ *
+ * Presentation Layer:
+ * View: Activities, Fragments.
+ * ViewModel: Fetches data from Use Cases.
+ *
+ * Domain Layer:
+ * Entities: Core business models.
+ * Use Cases: Business logic.
+ *
+ * Data Layer:
+ * Repositories: Data access abstraction.
+ * Data Sources: Actual implementations (e.g., network, database).
  */
-class MainViewModel: ViewModel() {
+class MainViewModel constructor(private val savedStateHandle: SavedStateHandle): ViewModel() {
 
     val appRepository = AppRepositoryImpl()
     var count = 0
@@ -325,6 +380,16 @@ class MainViewModel: ViewModel() {
             "got result"
         }.await()
         println("#verifyAsyncWait: end of result: $result")
+    }
+
+    fun storeSavedInstanceFlow() {
+        savedStateHandle["test"] = "test value"
+        println("#savedInstance: storeSavedInstanceFlow saved")
+    }
+
+    fun retrieveSavedInstanceFlow() {
+        val result = savedStateHandle.get<String>("test")
+        println("#savedInstance: retrieveSavedInstanceFlow, saved value is: $result")
     }
 
 }

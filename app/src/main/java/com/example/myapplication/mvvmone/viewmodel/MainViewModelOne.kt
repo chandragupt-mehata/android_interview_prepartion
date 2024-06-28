@@ -23,6 +23,8 @@ class MainViewModelOne: ViewModel() {
                     is ResourceOne.Loading -> {
 
                     }
+
+                    else -> {}
                 }
             }
         }
