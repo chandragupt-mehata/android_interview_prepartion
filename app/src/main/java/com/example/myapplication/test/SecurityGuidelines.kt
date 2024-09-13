@@ -31,6 +31,7 @@ package com.example.myapplication.test
  * 1> key security: If you have any key you dont want to get that stolen or in other word you want to make sure that it will be secure. So we are ahaving keystore
  * which is hardware backed. Which meant it runs in separate memory.
  */
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.security.keystore.KeyGenParameterSpec
@@ -53,6 +54,7 @@ object KeyGenerator1 {
     }
 
     // Generate a subkey using the master key
+    @SuppressLint("CommitPrefEdits")
     fun generateSubKey(context: Context): String {
         //val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
         val masterKeyAlias = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
@@ -65,6 +67,9 @@ object KeyGenerator1 {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
+        if (sharedPreferences.getString("sub_key", null) == null) {
+            sharedPreferences.edit().putString("sub_key", "key value").apply()
+        }
         return sharedPreferences.getString("sub_key", null) ?: ""
     }
 }

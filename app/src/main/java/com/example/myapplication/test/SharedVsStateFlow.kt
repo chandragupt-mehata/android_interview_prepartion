@@ -10,16 +10,31 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+
+/**
+ * StateFlow vs LiveData:
+ * LiveData is lifecycle aware. That means it will not easy for us to use anywhere in our project. On other hand, StateFlow comes with a lot of extra functionality and we can also use it anywhere.
+ * Performance is impacted in LiveData, not in all cases but still "sometimes" makes the difference. How? In LiveData, if we want to map, filter, modify our output then we will do that on our main thread. But in StateFlow, we can specify our thread by using flowOn().
+ * Flows provide us with more functionality and operators.
+ * At this point, you have a good understanding of Kotlin Flow, SharedFlow, StateFlow, LiveData. Now, let me briefly tell you the cases for where to use which one:
+ *
+ * If you want to execute independent/new stream of data for every collector and also only emit when there is a collector then use Flow.
+ * If you want to share your data stream and emit it anytime irrespective of any collector collecting or not, then use SharedFlow.
+ * If you want to save the last state of our data stream and want to use it anywhere(not only for lifecycle aware components) then use StateFlow.
+ */
+
 // https://chatgpt.com/share/218d22ea-cbca-499d-8e3d-dbfe0b0da8af
 fun main() {
     runBlocking {
-        cancelBlockingCoroutineFlow()
+        analyzeStateFlow()
         println("end")
     }
 }
 
+// As both state and shared flow are hot flows they will never complete by themselves.
 // But after cancellation - emitter of state flow and shared flow with SharingStarted.Eager/SharingStarted.Lazily will keep on emitting the values
 // where as emitter of SharingStarted.WhileSubscribed will get stopped the moment collector got cancelled. But of course main is not being finished
 
@@ -80,16 +95,19 @@ suspend fun analyzeSharedFlow() {
 
 suspend fun analyzeStateFlow() {
     coroutineScope {
-        val stateValues = emitStateValues()
+        val stateValues = emitStateValues().stateIn(this)
+        // if we remove state in and treat it as normal flow then it will behave like cold flow
+        // i.e. each subscriber will get new emission of flow
+        // https://outcomeschool.com/blog/cold-flow-vs-hot-flow
         launch {
-            emitStateValues().collect {
+            stateValues.collect {
                 println("collecting value: in one $it")
             }
             println("end")
         }
         delay(4000)
         launch {
-            emitStateValues().collect {
+            stateValues.collect {
                 println("collecting value: in two $it")
             }
             println("end")

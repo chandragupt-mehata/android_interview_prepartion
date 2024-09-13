@@ -1,0 +1,83 @@
+https://github.com/XXShweta/MVI-Maverick-Architecture/blob/main/app/src/main/java/com/tutorial/mvinewsapp/data/repositoryImpl/NewsRepositoryImpl.kt
+https://github.com/akashraghav/Android-MVVM-Clean/tree/master/app
+https://chatgpt.com/share/cd801574-2830-4a1e-a0ee-50416b1b21c3
+
+Repository Layer: No error handling unless necessary for specific cases like logging or retries.
+Use Case/Domain Layer: Primary place for error handling. Transform exceptions into meaningful application states. In most of the cases domain layer
+would be independent of other layers. That is why mapping should be done in data layer only as domain layer should not access data layer object.
+ViewModel Layer: Optional additional state management for UI.
+View Layer: React to state changes from the ViewModel.
+
+If there is no domain layer or no use case then better to catch the exception in data layer only. And using Resource
+or any other Result generic object pass that error to presentation layer.
+
+
+
+MVVM
+ * Model-View-ViewModel (MVVM) is a software architectural pattern commonly used in application development to separate the concerns of the
+ * user interface (UI) from the business logic and data. It facilitates a clean separation of concerns, making the
+ * code more maintainable and testable. Here’s a breakdown of the three main components:
+ *
+ * Model:
+ * Represents the data and business logic of the application.
+ * Encapsulates the data and defines the business rules for how the data can be changed and manipulated.
+ * Typically consists of data classes, business logic, and data access components (like repositories or data sources).
+ * View:
+ * Represents the UI of the application.
+ * Displays the data and sends user actions to the ViewModel.
+ * Should contain minimal logic, mainly for presentation purposes.
+ * In Android development, this could be Activities, Fragments, or XML layouts.
+ * ViewModel:
+ * Acts as a mediator between the View and the Model.
+ * Handles the presentation logic and prepares data for the View.
+ * Keeps track of the UI state and exposes it to the View.
+ * Listens to changes in the Model and updates the View accordingly.
+ * In Android, ViewModels are lifecycle-aware, which means they survive configuration changes like screen rotations.
+ *
+ * Combining MVVM with Clean Architecture involves structuring the code to include the principles of both patterns. This combination leverages the
+ * strengths of MVVM for UI-related concerns and Clean Architecture for a broader separation of concerns across the entire application.
+ * If we keep on putting logic inside view model it will be blasted at one time. So clean architecture makes view model as light weight by introducing use
+ * case along with other classes in domain layer.
+ *
+ * Layered Approach:
+ *
+ * Presentation Layer:
+ * View: Activities, Fragments.
+ * ViewModel: Fetches data from Use Cases.
+ *
+ * Domain Layer:
+ * Entities: Core business models.
+ * Use Cases: Business logic.
+ * Repositories: Data access abstraction.
+ *
+ * Data Layer:
+ * Data Sources: Actual implementations (e.g., network, database).
+ */
+
+/**
+ *
+ * Advantages of SavedStateHandle
+ * Lifecycle-Aware: SavedStateHandle is lifecycle-aware and tied to the ViewModel, which helps in managing state across configuration changes and process death without tightly coupling it to the activity or fragment lifecycle.
+ * Simplified State Management: It simplifies state management by integrating directly with ViewModel, allowing you to manage UI-related state in a single place.
+ * Separation of Concerns: Promotes separation of concerns by keeping UI state management out of activities and fragments.
+ */
+
+/**
+ * Why Avoid Direct Context Passing?
+ * Memory Leaks:
+ *
+ * Activity and Fragment contexts are tied to their respective lifecycles. When an Activity or Fragment is
+ * destroyed (e.g., due to a configuration change like a screen rotation), the ViewModel might still hold a reference to the old context.
+ * This prevents the garbage collector from freeing the memory used by the old Activity or Fragment, leading to a memory leak.
+ * Lifecycle Mismatch:
+ *
+ * The lifecycle of a ViewModel is usually longer than the lifecycle of an Activity or Fragment. The ViewModel is designed to outlive the UI components it
+ * serves, ensuring that the data it manages can survive configuration changes. Passing a short-lived Activity context to a longer-lived ViewModel can
+ * cause unexpected behavior and resource mismanagement.
+
+
+
+
+
+
+

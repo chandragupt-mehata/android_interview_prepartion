@@ -1,0 +1,132 @@
+Obfuscation, like code minification, is controlled by ProGuard. When minifyEnabled is set to false, neither code minification nor obfuscation will
+occur. ProGuard handles both minification (reducing the size of the code) and obfuscation (renaming classes and methods to make the code harder to
+reverse-engineer). Both of these features are disabled together when minifyEnabled is false.
+
+To summarize, in your configuration:
+
+groovy
+Copy code
+release {
+    minifyEnabled false
+    shrinkResources false
+    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+}
+Code minification is disabled.
+Resource shrinking is disabled.
+Obfuscation is also disabled, as it is a part of ProGuard's functionality which is not active when minifyEnabled is false.
+To enable both minification and obfuscation, you would need to set minifyEnabled to true:
+
+groovy
+Copy code
+release {
+    minifyEnabled true
+    shrinkResources true
+    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+}
+This configuration will enable ProGuard, performing both code minification and obfuscation as per the rules specified in the ProGuard configuration files.
+
+
+release {
+    minifyEnabled true
+    shrinkResources true
+}
+will it enabled proguard ? if yes then what is the use of proguardFiles
+ChatGPT
+Yes, setting minifyEnabled to true will enable ProGuard, which will handle code minification and obfuscation.
+
+The proguardFiles directive is used to specify the ProGuard configuration files that determine how ProGuard processes your code. These
+files contain the rules and settings that ProGuard uses to perform minification, obfuscation, and optimization.
+
+Here's what the configuration does in detail:
+
+groovy
+Copy code
+release {
+    minifyEnabled true
+    shrinkResources true
+    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+}
+minifyEnabled true: Enables ProGuard, which will perform code minification and obfuscation.
+shrinkResources true: Enables resource shrinking, which works with ProGuard to remove unused resources.
+proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro': Specifies the ProGuard configuration files to use.
+Use of proguardFiles
+getDefaultProguardFile('proguard-android.txt'): This includes the default ProGuard rules provided by the Android SDK, which
+are generally a good starting point for most apps. These rules include common settings for Android applications to avoid issues
+with typical code and resources.
+'proguard-rules.pro': This is your custom ProGuard rules file where you can add project-specific ProGuard rules. You can use this file to
+further customize the behavior of ProGuard, such as keeping certain classes or methods from being obfuscated, or adding additional optimization rules.
+Example Custom ProGuard Rules
+Here are some example rules you might include in your proguard-rules.pro file:
+
+proguard
+Copy code
+# Keep all public classes, methods, and fields in the specified package
+-keep public class com.example.myapp.** {
+    public *;
+}
+
+# Keep all classes extending a specific superclass
+-keep class * extends android.app.Activity
+
+# Do not obfuscate methods annotated with @Keep
+-keepclassmembers class ** {
+    @com.example.myapp.Keep *;
+}
+In summary, enabling ProGuard with minifyEnabled true allows ProGuard to perform its tasks, while proguardFiles specifies which
+configuration files ProGuard should use to determine how to process your code and resources.
+
+For classes to keep to avoid obfuscation:
+https://github.com/google/gson/tree/main/examples/android-proguard-example
+android-proguard-example
+Example Android project showing how to properly configure ProGuard. ProGuard is a tool for 'shrinking' and obfuscating compiled classes. It
+can rename methods and fields, or remove them if they appear to be unused. This can cause issues for Gson which uses Java reflection to access the fields
+of a class. It is necessary to configure ProGuard to make sure that Gson works correctly.
+
+Also have a look at the ProGuard manual and the ProGuard Gson examples for more details on how ProGuard can be configured.
+
+The R8 code shrinker uses the same rule format as ProGuard, but there are differences between these two tools. Have a look at R8's Compatibility FAQ,
+and especially at the Gson section.
+
+Note that the latest Gson versions (> 2.10.1) apply some of the rules shown in proguard.cfg automatically by default, see the
+file gson/META-INF/proguard/gson.pro for the Gson version you are using. In general if your classes are top-level classes or are static, have
+a no-args constructor and their fields are annotated with Gson's @SerializedName, you might not have to perform any additional ProGuard or R8 configuration.
+
+An alternative to writing custom keep rules for your classes in the ProGuard configuration can be to use Android's @Keep annotation.
+
+If you use Parcelable, you generally don't need to worry about ProGuard rules for the fields within your Parcelable classes because Parcelable does not
+rely on reflection.
+
+Gson uses JSON serialization and deserialization and accordingly reflection, not Parcelable. Because of that we generally need to keep these classes
+away from being obfuscation.
+
+Gson:
+Reflection: Gson uses reflection to serialize and deserialize JSON, which means it accesses field names at runtime.
+ProGuard: For Gson, if your fields are accessed via reflection and their names are changed by obfuscation, you might need ProGuard rules to preserve the
+field names.
+
+Summary
+Parcelable: Does not require special ProGuard rules as it does not use reflection.
+Gson: Might require ProGuard rules to prevent obfuscation of field names if it relies on reflection for serialization/deserialization.
+
+
+**************************************
+**************************************
+**************************************
+**************************************
+**************************************
+
+https://www.youtube.com/watch?v=o0M4f5djJTQ (For Build Flavour)
+
+APK (Android Application Package) is a traditional file format used for distributing and installing Android apps. It includes all the compiled code,
+resources, and assets needed to build an app for all device configurations, such as different screen sizes and languages. When users download
+an app from the Google Play Store, they download a pre-built APK file that includes all the code and resources, whether they are needed or not.
+
+AAB (Android App Bundle), on the other hand, is a publishing format that allows developers to publish more efficient apps on the Google Play Store. It
+includes all the compiled code, resources, and assets needed to build an app, but in a more efficient way than APKs. AABs only include the code and
+resources needed for a specific device configuration, such as a screen size, language, or texture compression format. When a user downloads
+an app from the Play Store, the store generates a custom APK that includes only the resources needed for the user’s device. This means that users only
+download the parts of the app that they need, which can result in smaller app sizes and faster download times.
+
+The main advantages of AAB over APK are that AABs are smaller in size, faster to download, and allow for dynamic feature delivery. Developers can
+also update specific parts of the app without having to update the entire app. However, AABs require more work to build than APKs and are currently
+the only supported format on the Google Play Store. We can summarize the differences between the two as below.

@@ -1,4 +1,6 @@
-package com.example.myapplication.test
+package com.example.myapplication.interview
+
+import java.util.Stack
 
 /*
 Design a Credit Card Parser function that will check if a credit card number is valid or not.
@@ -82,6 +84,12 @@ Example: "3796-1111-2222-1122" and "11/22" is valid. Return "Amex".
  * How to save UI state?
  * In the case of system initiated process death how you can persist the data?
  * Where you used Hot flow and cold flow in your project?
+ * Cold Flow: Fetching and displaying the message history when a user opens a chat screen.
+ * Each time the screen is opened, the flow will start from the beginning and fetch messages from the database. (considering flow object creation is
+ * not being re created on each navigation because if that occurs then in case of hot flow, like shared flow, object would be new for each navigation and
+ * flow will be re start for each times.)
+ *
+ *
  * Difference between Hot Flow and Cold flow?
  * Difference between shared flow and state flow?
  * Why data flow in compose is unidirectional?
@@ -138,7 +146,7 @@ Example: "3796-1111-2222-1122" and "11/22" is valid. Return "Amex".
  * What is the advantage of Coroutines over Threads?
  * How does cancellation work in Coroutines?
  * What is the purpose of the supervisor job?
- * What is the difference between Cold Flow and the hot hot flow?
+ * What is the difference between Cold Flow and the hot flow?
  * How can you combine multiple Coroutines?
  * what is the advantage of Kotlin over Java?
  * What does it mean that our variable is immutable?
@@ -148,6 +156,9 @@ Example: "3796-1111-2222-1122" and "11/22" is valid. Return "Amex".
  * What is the context in Android
  * What are the types of Context? In Android, Context is an abstract class that provides access to application-specific resources and classes,
  * as well as up-calls for application-level operations such as launching activities, broadcasting, and receiving intents, etc.
+ * Context is a reference to the current state or environment of your app. It’s what your app uses to interact with the Android system.
+ * If your app is like a person, then context is like the surroundings or environment that person is in. It helps the person know where they are and
+ * what they can interact with.
  *
  * Have you heard about services?
  * Why are we using a broadcast receiver?
@@ -164,6 +175,7 @@ Example: "3796-1111-2222-1122" and "11/22" is valid. Return "Amex".
  * how can you reduce the number of recompositions?
  * What is the concept of side effect in jetpack compose?
  * Have you heard about lazy composition?
+ * answer: https://medium.com/@husayn.fakher/exploring-the-benefits-of-lazy-columns-in-jetpack-compose-for-smooth-and-efficient-scrolling-9aefc90ebc96
  * What is a composition local? Can you give some useful examples?
  * Can you give some examples of how to optimise jetpack compose code?
  * What is happening when an application is first starting.
@@ -176,6 +188,102 @@ Example: "3796-1111-2222-1122" and "11/22" is valid. Return "Amex".
  * Did you use work manager?
  *
  * chris harman
+ */
+
+/**
+ * Bharat Expedia Interview
+ * EXPEDIA CLIENT FACING ROUND
+ *
+ * Intros
+ *
+ * whats your team size?
+ *
+ * What architectures u have used?
+ *
+ * What is MVVM?
+ *
+ * MVVM vs MVI?
+ *
+ * Unidirectional vs bidirectional data flow
+ *
+ * What is clean architecture?
+ *
+ * Have you tried out or worked on anything latest which was recently introduced lets say in 2024
+ *
+ * Design Task (hackerrank platform):
+ *
+ * Design a simple weather app (UI not mandatory) to show the response from the API to UI
+ *
+ * {
+ *     "temp": 23,
+ *    "unit": "C"
+ * }
+ *
+ *
+ * Further questions asked based on my code like placing code to respective packages/layers with clean architecture, why certain classes are in those layers and more
+ *
+ * Modularizing the layers
+ *
+ * How the layers are dependent when it is modularized
+ */
+
+/**
+ * Dhiraj Sharma's Hotstar
+ * Questions asked in Hotstar Android Interview
+ * In your previous project, how you used to group and manage test cases, explain through example
+ * what is suite class used for and how it interacts with yaml file for ci/cd, explain through code
+ * what are the steps involved in configuring new test cases in ci/cd pipeline
+ * jetpack compose and its advantages
+ * challenges faced with jetpack compose in testing
+ * Testing custom or complex composables, especially those that involve animations, gestures
+ * Write code to create & test a button & textfield in jetpack compose
+ * How will you test a recyclerview using espresso
+ * Write code to create recyclerview in jetpack compose
+ * When a test case fail, how you will debug in ci/cd pipeline
+ * When pipeline fail, how will you isolate and run a single unit test
+ * How you support old android versions while testing through espresso
+ * Write a program for
+ *
+ * Given two strings A and B, return if they are equal when both are typed into empty text editors. # means a backspace character.
+ *            Example :
+ *            If  A = "ab#c" and B = "ad#c", then output is True
+ *            If  A = "ab#c" and B = "ad#", then output is False
+ *
+ *       14. In above program, if we cant use deleteCharAt(I used in solution), what will be the alternative approach
+ *        15. What other data structures can be used to make above program
+ *       16. Write all possible test cases based on below scenario
+ *
+ * There are two kinds of user- paid and free. Both of them are reaching the hotstar app through deeplinks, however their experience are different, the free user will see an ad widget which when clicked will redirect user to that external app if installed else on playstore. The paid user will not see ad widget at all.
+ *
+ * Answer - Jetpack compose - Animation,
+ * IQVIA - Senior Manager - Anuja Agrawal, Healthcare domain project
+ */
+
+/**
+ * Saurabh Dhami's
+ * ALIB-APPN Android Interview Questions (CI):
+ * 1. Entire Android Experience
+ * 2. How to use Retrofit in one module and not allow other modules to see it
+ * 3. Hide dependency in gradle file to another module
+ * 4. How to apply plugin in gradle based on specific flavour
+ * 5. Solid Principles
+ * 6. Difference between MVVM and MVI
+ * 7. Android components
+ * 8. How do you communicate and share data between services and activities
+ * 9. Lifecycle of a bind service
+ * 10. What types of data could be shared between services and activities
+ * 11. Limitation of a Bundle
+ * 12. How do you ensure an extra layer of encryption while calling an API
+ * 13. Difference between symetric and Asymetric Encryption
+ * 14. How do you generate symmetric and Asymetric keys
+ * 15. How do you get the callback of the button in webpage inside Android app
+ * 16. Any Experience on React Native 
+ * 17. Why do we need data classes in kotlin
+ * 18. Could we inherit one data class from another data class
+ * 19. Sealed class and its usage
+ * 20. Extension functions in kotlin
+ * 21. Could we call extension function in java
+ * 22. Agile methodology and its ceremonies
  */
 
 fun main25() {
@@ -233,12 +341,12 @@ object CardParser {
 }
 
 fun main() {
-    for (i in 1..1000000) {
+    /*for (i in 1..1000000) {
         val thread = Thread(Runnable {
 
         })
         thread.start()
-    }
+    }*/
     /*println(
         slot(
             arrayOf(
@@ -251,7 +359,9 @@ fun main() {
             println("value is: ${it[0]} and ${it[1]}")
         }
     )*/
+    println(validateTwoStrings("#abda#c", "##abda#c"))
 }
+
 fun slotT(input: Array<IntArray>): Array<IntArray> {
     var resultArray = arrayListOf<IntArray>()
     /*input.reduce(){
@@ -260,8 +370,7 @@ fun slotT(input: Array<IntArray>): Array<IntArray> {
         resultArray[0] = intArrayOf(a[0],a[1])
     }*/
     var temp = intArrayOf(Int.MAX_VALUE, Int.MIN_VALUE)
-    input.reduce {
-        a, b ->
+    input.reduce { a, b ->
         if (a[1] < b[0]) {
             temp = intArrayOf(a[0], a[1])
             resultArray.add(temp)
@@ -293,5 +402,39 @@ fun slot(input: Array<IntArray>): Array<IntArray> {
     }
     result.add(intArrayOf(start, end))
     return result.toTypedArray()
+}
+
+/**
+ *  * Given two strings A and B, return if they are equal when both are typed into empty text editors. # means a backspace character.
+ *  *            Example :
+ *  *            If  A = "ab##c" and B = "ad#c", then output is True
+ *  *            If  A = "ab#c" and B = "ad#", then output is False
+ */
+
+fun validateTwoStrings(str1: String, str2: String): Boolean {
+    val stack = Stack<Char>()
+    str1.forEach {
+        if (it == '#') {
+            if (stack.isNotEmpty()) {
+                stack.pop()
+            }
+        } else {
+            stack.push(it)
+        }
+    }
+    val newStr1 = stack.joinToString("")
+    stack.clear()
+    str2.forEach {
+        if (it == '#') {
+            if (stack.isNotEmpty()) {
+                stack.pop()
+            }
+        } else {
+            stack.push(it)
+        }
+    }
+    val newStr2 = stack.joinToString("")
+    println(stack.joinToString{it.toString()} + " and " + newStr2)
+    return newStr1 == newStr2
 }
 

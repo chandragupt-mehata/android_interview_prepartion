@@ -1,0 +1,102 @@
+tasks.register("Hello") {
+    doFirst {
+        println("hello entering inside tasks")
+    }
+    doLast {
+        println("hello exiting inside tasks")
+    }
+}
+
+gradle -i build = build with more logging info
+gradle Hello
+
+when we do gradle build - it will run all task associated with gradle plugin
+like
+Task :compileJava  up-to-date
+Task :processResources
+Task :classes
+Task :jar up-to-date
+Task :assemble
+
+if already run then related task shows up-to-date but if classes are changed then it will re-run those tasks.
+
+gradle consists of project and tasks
+one project can have multiple task
+Build file consists of - tasks either in pre-defined way or directly or indirectly through plugin like java plugin
+
+To see all inbuilt tasks create one empty gradle file and run gradle tasks
+it will show - setup tasks as init and wrapper. And some other help tasks.
+
+writing tasks
+Build phases - 1 initialization, 2 configuration, 3 Execution.
+Execution - doFirst, doLast
+tasks.register("Hello") {
+    doFirst {
+        println("hello entering inside tasks")
+    }
+    doLast {
+        println("hello exiting inside tasks")
+    }
+}
+
+Task dependencies
+tasks.register("world") {
+    dependsOn("Hello")
+    doLast {
+        println("hello inside world")
+    }
+}
+
+********
+Plugins extends Projects
+plugins{
+  java
+}
+gradle tasks
+Build task - assemble, build, buildDependents etc
+Documentation task - javadoc
+Build setup tasks - init, wrapper
+Help Tasks - so many
+
+some external/community plugin
+plugins{
+  java
+  id("xyz") version "0.0.1"
+}
+
+Gradle dependency depends upon configuration like
+Compile time
+Runtime
+Test compilation
+Test runtime
+gradle -q dependencies
+gradle -q dependencies --configuration implementation
+gradle -q dependencies --configuration compileClasspath
+
+And also can be satified from
+Other projects
+File Systems
+Maven repositories
+Ivy repositories
+
+Repository based dependencies
+- Remote, - Local, - File System
+if I want to use the file system, I can say flatDir and tell it to use the lib directory to go and satisfy my dependencies.
+And this is a specific format. So I can say implementation log4j:log4j: version number without the JAR file here.
+
+Configuration scope based dependencies
+implementation scope - a: compileOnly, b: runtimeOnly
+testImplementation scope - a: testCompileOnly, b: testRuntimeOnly
+implementation: mostly we use implementation configuration. It hides the internal dependency of the module to its consumer to avoid accidental use of any transitive dependency, hence faster compilation and less recompilation.
+api: must be used very carefully, since it leaks the to consumer’s compile classpath, hence misusing of api could lead to dependency pollution.
+compileOnly: when we don’t need any dependency at runtime, since compileOnly dependency won’t become the part of the final build. we will get a smaller build size.
+runtimeOnly: when we want to change or swap the behaviour of the library at runtime (in final build).
+https://www.youtube.com/watch?v=AJO3xK5LTIY
+
+Java has two types of dependencies.
+The “compileClasspath” dependencies are used for compiling Java source code to byte code. If you use dependencies class, interface, or annotations, you need to have it as a compileClasspath dependency.
+The “runtimeClasspath” dependencies are used in the runtime of your Java program.
+In Gradle, you usually set dependencies using “implementation” or “api”. Those commands place dependencies to both compileClasspath and runtimeClasspath. Just in case you are confused between them, please read my other post.
+Reference Link -
+https://medium.com/@avocadi/compileonly-and-runtimeonly-my-experiment-with-them-9e3174eacad2
+

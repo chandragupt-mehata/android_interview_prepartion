@@ -1,5 +1,13 @@
 package com.example.myapplication.test
 
+/**
+ * The Kotlin standard library contains several functions whose sole purpose is to execute a block of code within the context of an object. When
+ * you call such a function on an object with a lambda expression provided, it forms a temporary scope. In this scope, you can access the object without
+ * its name. Such functions are called scope functions. There are five of them: let, run, with, apply, and also.
+ *
+ * let it be
+ * "Also": You’re doing something "in addition" to the object, so you need to refer back to the object with it.
+ */
 fun main() {
     val customClass = CustomClass("")
     customClass.customScope {
@@ -102,3 +110,20 @@ fun <T, R> customWithScope(with: T, lambda: T.() -> R): R {
 // - if we want to use this then create lambda as extension function of T so that it will have this
 
 data class CustomClass(var abc: String)
+
+// we can not access one variable of ScopeOne object in scope of scopeTwo object which is nested one i.e.
+// inside scopeOne object's scope there is another scope of scopeTwo object. And as both object have same variable and we dont have any reference for
+// contextual object so accessing one variable will always refer to scopeTwo object.
+// If we use let or other scope fn which provide reference to context object then above problem will get solved in such chained scope function.
+fun scopeFnTest() {
+    val scopeOne = ScopeOne("hi", ScopeTwo("cool"))
+    scopeOne.apply {
+        this.scopeTwo.apply {
+            one.plus("")
+        }
+    }
+}
+
+class ScopeOne(val one: String, val scopeTwo: ScopeTwo)
+
+class ScopeTwo(val one: String)

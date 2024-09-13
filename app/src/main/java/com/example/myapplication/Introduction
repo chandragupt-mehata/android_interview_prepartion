@@ -1,0 +1,37 @@
+In restore module -
+Once we do the provision - we get subscriber Id from server.
+After that we pass subscriber Id to server with last sync time to get the messages.
+Each msg will have unique server Id along with that. Based on server id we check into DB whether msg is already present or not
+If not then we do save it as new msg and if yes then we update the msg (read event, status update etc)
+We check for profile with receipient's subscriber id. We pass to conversation table and check whether any
+conversation belongs to these receipients or not if not then we create new conversation if yes then we map msg id to that
+conversation entity.
+
+MMS - msg id (server generates)
+SMS - check sum
+GROUP Id - server id
+
+20 msgs -
+
+Challenges - Without synchronized we were saving the data into db and sometimes it causes same msg insertion which was throwing the exception causes
+the restore flow stops. As exception was propagating to parent causing scope cancellation and ultimately stopping the restore process.
+
+Recomposition - issue
+Lazy column - providing key
+Remember block
+side effect handling properly
+
+I am an Android developer with 12 years of experience. During my carrer I have worked on various kind of mobile application like
+e-commerce app, messaging app etc. In my initial days, I worked on older technologies used
+for designing Android apps, such as Java as a programming language and XML for layout, services for background operation. Over time, I
+have gained hands-on experience with the latest technologies, including Kotlin, Coroutines, WorkManager, Flow, Jetpack compose etc.
+Along with that I also got an opportunity to work on cross platform language i.e. on Flutter.
+In my previous organization, I successfully initiated and delivered a project using Flutter, dedicating two years
+to it before transitioning back to native Android development. My primary focus has been on messaging applications through out my carrer.
+Recently, I was responsible for an end-to-end implementation of a restore module. I will not go into complete details of that module. From very high level
+that module was responsible for fetching the messages from server post login. As this task was suppose to happen even if app is in background so I uses work
+manager to initiate the restore flow. We fetch msgs with configurable count. As we get msgs we keep on saving those msg in database. I used Room Database and
+updating the UI back. We were returning flow of msg db object to domain layer. App layer can communicate with that accordingly.
+
+involved restoring messages post-login/provisioning, storing them in a Room database, and updating the UI using WorkManager,
+Coroutines, Flow, and Jetpack Compose.

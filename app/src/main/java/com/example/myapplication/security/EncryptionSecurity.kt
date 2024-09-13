@@ -35,6 +35,21 @@ package com.example.myapplication.security
  * Message Authentication Codes (MACs): TLS uses hash functions to generate Message Authentication Codes,
  * which are used to ensure the integrity of transmitted data. The MAC is calculated using a shared secret
  * key between the client and server.
+ * Client Side:
+ * The client sends DATA to the server.
+ * To ensure integrity, the client computes a MAC using a hash function like HMAC:
+ * plaintext
+ * Copy code
+ * MAC = HMAC(SECRET_KEY, DATA)
+ * The client sends both DATA and the computed MAC to the server.
+ *
+ * Server Side:
+ * The server receives DATA and MAC.
+ * The server computes its own MAC using the same KEY and DATA:
+ * plaintext
+ * Copy code
+ * MAC' = HMAC(SECRET_KEY, DATA)
+ * If the MAC sent by the client matches the MAC computed by the server (MAC == MAC'), the server knows the data was not altered during transmission.
  *
  * Digital Signatures: In some cases, digital signatures are used for authentication. These signatures
  * involve the use of hash functions to create a digest of the signed data, which is then encrypted with
@@ -152,6 +167,7 @@ class EncryptionSecurity {
  * Involves a single key that both parties use to encrypt and decrypt data.
  * This key is securely exchanged using asymmetric encryption during the handshake.
  * SSL and TLS Process (High-Level)
+ *
  * SSL
  * Handshake:
  *
@@ -216,4 +232,48 @@ class EncryptionSecurity {
  *
  *
  *
+ */
+
+/**
+ * Digital Signatures: Used for authenticating and ensuring the integrity of data. They rely on asymmetric cryptography and are crucial for
+ * security beyond the initial handshake.
+ *
+ * I see where the confusion might be coming from. Let’s clarify how digital signatures work in practice, particularly regarding key management and
+ * the role of the public/private keys:
+ *
+ * Digital Signatures: Key Management
+ * Key Generation:
+ *
+ * Client: The client generates its own public/private key pair if it's going to use digital signatures. This key pair is typically managed by the
+ * client’s system or application.
+ * Server: Similarly, the server generates its own public/private key pair for its own purposes.
+ * Digital Signature Process:
+ *
+ * Client (Signing Data):
+ *
+ * Hashing: The client creates a hash of the data.
+ * Signing: The client encrypts this hash with its own private key to create the digital signature. This private key is generated and managed by the client.
+ * The client sends both the data and the digital signature to the server.
+ * Server (Verifying Data):
+ *
+ * Hashing: The server computes its own hash of the received data.
+ * Decrypting: The server uses the client’s public key to decrypt the digital signature, which reveals the hash that the client signed.
+ * Verification: The server compares the decrypted hash with the hash it computed. If they match, the data is confirmed as authentic and unaltered.
+ * How the Server Gets the Client’s Public Key:
+ * Public Key Distribution:
+ *
+ * In Practice: The client’s public key is typically distributed through a secure mechanism. This might be part of a digital certificate issued by a trusted
+ * certificate authority (CA), or it could be shared through a secure channel or directory service.
+ * Certificates:
+ *
+ * Digital Certificates: Often, public keys are distributed via digital certificates. The client might have a certificate from a CA that includes
+ * its public key. The server can use this certificate to extract the client’s public key.
+ * Key Exchange:
+ *
+ * Mutual TLS: In mutual TLS (mTLS), the client and server exchange certificates during the handshake. The server can use the client’s certificate
+ * to obtain the public key.
+ * Summary:
+ * Client: Generates its own key pair. Uses its private key to sign data and creates a digital signature.
+ * Server: Uses the client’s public key (obtained through certificates or secure distribution) to verify the digital signature.
+ * This setup ensures that both parties can authenticate each other and verify the integrity of the transmitted data securely.
  */

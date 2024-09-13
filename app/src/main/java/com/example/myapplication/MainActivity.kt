@@ -26,7 +26,7 @@ import com.example.myapplication.fragment.FragmentA
 import com.example.myapplication.test.BuilderParentClass
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.viewmodel.MainViewModel
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         testParallelDecomposition(viewModel)
         testThreadExecuters(viewModel)
         testViewModelSavedInstance(viewModel)
-        //testSuspendCancellableCoroutineAndANR()
+        testSuspendCancellableCoroutineAndANR()
 
         /*setContent {
             MyApplicationTheme {
@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     private fun testSuspendCancellableCoroutineAndANR() {
         lifecycleScope.launch {
             doAsyncWorkWithSuspendCancellableCoroutine()
-            println("after doAsyncWorkIndependent end, testSuspendCancellableCoroutineAndANR also ends")
+            println("#custom_suspend, after doAsyncWorkIndependent end, testSuspendCancellableCoroutineAndANR also ends")
         }
     }
 
@@ -155,6 +155,18 @@ class MainActivity : AppCompatActivity() {
             println("#testStateFlowLiveDataInBackground, liveData : $it")
         }
         lifecycleScope.launch() {
+            //you can catch the cancellation exception also
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                try {
+                    for (i in 1..15) {
+                        delay(1000)
+                        println("#testStateFlowLiveDataInBackground Repeating Task is running: $i")
+                    }
+                } catch (e: CancellationException) {
+                    println("#testStateFlowLiveDataInBackground Repeating Task is exception caught: ${e.message}")
+                }
+                println("#testStateFlowLiveDataInBackground Repeating Task is end with this line as exception is caught")
+            }
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // If the app goes to the background (state transitions to STOPPED), the coroutine will be canceled.
                 // If the app comes back to the foreground (state transitions to STARTED), a new coroutine will be launched, and the loop will start again.
@@ -169,7 +181,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collect {
-                    println("#testStateFlowLiveDataInBackground, stateFlow : $it")
+                    println("#testStateFlowLiveDataInBackground, stateFlow: $it")
                 }
             }
         }
@@ -177,7 +189,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.yourFlow(this)
-                viewModel.stateFlow.collect() {
+                viewModel.stateFlow2.collect() {
                     println("new test simulation yourFlow $it")
                 }
             }
@@ -195,6 +207,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.stateFlowNonMutable.onEach { value ->
             println("#testStateFlowLiveDataInBackground, stateFlowNonMutable : $value")
         }.launchIn(lifecycleScope)
+
+        viewModel.backgroundUpdate(lifecycleScope)
     }
 
     private fun setUpRecyclerViewAdapter() {

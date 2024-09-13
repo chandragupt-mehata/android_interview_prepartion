@@ -15,6 +15,17 @@ package com.example.myapplication.test
  * Compile time safety- Generics code is checked at compile time for the parameterized type so that it avoids run-time error.
  *
  */
+
+/**
+ * In” keyword means that the generic type can only be used as a parameter for functions or methods, but not as a return type. It means that
+ * we can pass any subtype of the generic type as a parameter to the function, but we cannot return a subtype of the generic type.
+ *
+ * “On the other hand, the “out” keyword means that the generic type can only be used as a return type, but not as a parameter. It means that we
+ * can return a subtype of the generic type, but we cannot pass a subtype of the generic type as a parameter to the function.
+ *
+ * Now let’s talk about the “where” keyword. It is used to define constraints on generic types. We can specify that the generic type must be a subclass of a
+ * certain class, implement a certain interface or have a certain property.
+ */
 fun main() {
     val a = A<String>()
     a.genericFunction("a,b,c")

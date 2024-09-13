@@ -1,0 +1,90 @@
+https://www.udemy.com/course/ci-cd-devops/learn/lecture/17812760#overview
+
+Drawback of process without CI/CD
+
+Integration is painful and effort consuming.
+Fixing issue at the end of iteration.
+Intermediate merge issue can hold up teams.
+Long feedback cycles for functional defects.
+Long iteration.
+
+Benefits of CI/CD
+A single repository where the code lives.
+Developer check in/ commit code frequently.
+Build should be triggered on each commit/merge.
+Build should be automated fast.
+Build should compile the code as well as run automated.
+Fixing a failed build should be top priority for developer.
+
+
+
+************
+The significant changes brought by CI/CD become apparent during the merging process and subsequent steps. Here’s a detailed comparison of the merging process and related activities:
+
+Merging and Post-Merging Processes
+Pre-CI/CD Era
+Manual Code Review:
+
+Developers manually request code reviews, which may involve sending emails or informal requests. The review process can be inconsistent and time-consuming.
+Manual Testing:
+
+Before merging, developers often perform manual tests on their local machines or a shared testing environment to ensure their changes don’t introduce issues.
+Manual Integration:
+
+After passing code reviews and manual tests, developers manually merge their changes into the main branch.
+This process often involves resolving merge conflicts manually, which can be error-prone and time-consuming.
+Manual Build:
+
+After merging, the build process is manually triggered. Developers run scripts or use build tools to compile and package the code.
+Manual Deployment:
+
+Deployment to testing, staging, or production environments is typically done manually. This can involve copying files to servers, restarting services, and verifying that the deployment was successful.
+
+
+
+CI/CD Era
+Automated Code Review and Pull Requests:
+
+Developers create pull requests (PRs) for their changes, which are automatically flagged for review by team members.
+Code review tools integrated with CI/CD systems can enforce rules and automatically check for code quality and standards.
+Automated Testing:
+
+CI/CD pipelines automatically run a suite of tests (unit, integration, functional) whenever changes are pushed to the repository.
+This ensures that code is continuously tested and validated throughout the development lifecycle.
+Automated Merging:
+
+Once the code review is approved and all automated tests pass, the CI/CD system can automatically merge changes into the main branch.
+Some CI/CD systems offer "merge queues" that ensure only changes that pass tests and reviews are merged, reducing the likelihood of integration issues.
+Automated Build:
+
+The CI/CD pipeline automatically triggers the build process whenever changes are merged. This ensures that builds are consistent and reproducible.
+Build artifacts (e.g., binaries, packages) are automatically created and stored.
+Automated Deployment:
+
+CI/CD systems can automatically deploy the built artifacts to testing, staging, or production environments.
+Deployment processes are scripted and automated, reducing the risk of human error and ensuring consistency across environments.
+Summary of Differences
+Automation: CI/CD introduces automation at every stage post-development, from code review and testing to merging, building, and deploying.
+Speed and Efficiency: Automated processes reduce the time required for each step, allowing for faster integration and deployment cycles.
+Reliability: Automated testing and builds ensure that changes are consistently validated, reducing the risk of introducing bugs or integration issues.
+Consistency: CI/CD pipelines enforce consistent processes and standards across the team, leading to more reliable and maintainable code.
+In summary, while the initial code development process remains largely the same, CI/CD significantly enhances the merging, building, testing, and deployment processes through automation, improving the overall efficiency, reliability, and consistency of software development.
+
+
+**************
+Continuous Deployment
+Correctness of deployment instruction like setting up test, prod url etc.
+It can be verified at the time time automated script creation. (CD)
+
+Diff in instruction as per diff env.
+Automated script can easily pick the correct env. One time setup here. (CD)
+
+Error prone nature of human task.
+Automation prevents it.(CD)
+
+Deployment are sophisticated, high impact with downtime.
+Automated deployment easily repeatable, less time for market release.(CD)
+
+For YAML
+https://www.youtube.com/watch?v=Wl3N0Y6ZnBU
+

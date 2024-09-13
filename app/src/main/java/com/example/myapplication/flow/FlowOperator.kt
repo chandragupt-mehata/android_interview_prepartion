@@ -71,7 +71,8 @@ fun main() {
             println("processed value: $it")
         }*/
 
-        //conflate: non terminal operator. Once it will process the collected value then at that time what ever value will get emitted will come inside
+        //conflate: non terminal operator. Once it will process the collected value then at that time what ever value will get emitted will come inside,
+        // prior to that all other emitted value will not come inside, those will get discarded.
         // in collect latest each value will come inside but it will get canceled and restarted if before processing next item will get emitted
         /*val collect1 = getflow().take(15).conflate().collect {
             println("came inside")

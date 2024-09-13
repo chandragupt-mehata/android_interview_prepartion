@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import java.util.LinkedList
 import java.util.concurrent.Executors
+import java.util.concurrent.LinkedBlockingDeque
 
 fun main() {
     val rectangle: Rectangle = Square()
@@ -26,8 +26,7 @@ fun main() {
         abc + def
     }
 
-    val lambda = {
-        x: String, y: String ->
+    val lambda = { x: String, y: String ->
         ""
     }
     higherOrderFunction(lambda)
@@ -59,6 +58,7 @@ fun main() {
     }
     println("end of runBlocking")
 }
+
 val mutex = Mutex()
 
 fun flowVsState() {
@@ -149,7 +149,7 @@ interface Producer<out T> {
     fun produce(): T
 }
 
-class NormalGeneric(val value: String): Consumer<String>, Producer<String> {
+class NormalGeneric(val value: String) : Consumer<String>, Producer<String> {
     override fun consume(item: String) {
         val any: Any = item
     }
@@ -187,10 +187,42 @@ open class Rectangle {
     }
 }
 
-class Square: Rectangle() {
+class Square : Rectangle() {
     override fun inside() {
         println("inside square")
     }
+}
+
+class Gen<T: LivingThings>(t: T){
+    fun performInOperation(t: T): T {
+        t.performBreathing()
+        return t
+    }
+}
+
+open class LivingThings {
+
+    fun performBreathing() {
+
+    }
+}
+
+class Human : LivingThings() {
+    fun performReading() {
+
+    }
+}
+
+class House<T> {
+
+}
+
+fun <T>genericGin(t: T) where T: Animal{
+
+}
+
+fun testGeneric() {
+    val item = Gen<Human>(Human())
 }
 
 

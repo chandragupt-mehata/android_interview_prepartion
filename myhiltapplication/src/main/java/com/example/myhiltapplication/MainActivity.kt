@@ -69,6 +69,7 @@ import com.example.myhiltapplication.test.TestDiIndependentTwoHilt
 import com.example.myhiltapplication.ui.theme.MyApplicationTheme
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -113,7 +114,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        //finish()
+        finish()
     }
 
     @SuppressLint("StateFlowValueCalledInComposition")
@@ -127,6 +128,7 @@ class MainActivity : ComponentActivity() {
         throwCoroutineException()
         viewModel.checkWithContextBehaviourOnBackPressed()
         setComposableNavHost()
+        viewModel.checkNonCancellableFlow()
         //setComposableComponent(viewModel)
     }
 

@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment
  *
  */
 
+//https://chatgpt.com/share/fa409d37-5c08-4ebb-aea7-37ba59a228b1
+
 fun main() {
     val builderParentClass = BuilderParentClass(s1 = "", s2 = null)
 }
@@ -115,6 +117,55 @@ class FragmentFactoryImpl : FragmentFactory {
 }
 
 
+// Above example is having one loop hole that for each new fragment createFragment method need to be updated which is violation of open/closed principle.
+// to overcome we can use factory provider implementation
+
+class SettingFragmentFactory: FragmentFactory {
+    override fun createFragment(type: String): Fragment {
+        TODO("Not yet implemented")
+    }
+
+}
+
+class HomeFragmentFactory: FragmentFactory {
+    override fun createFragment(type: String): Fragment {
+        TODO("Not yet implemented")
+    }
+
+}
+
+class ProfileFragmentFactory: FragmentFactory {
+    override fun createFragment(type: String): Fragment {
+        TODO("Not yet implemented")
+    }
+
+}
+
+class FragmentFactoryProvider {
+    private val fragmentProviderMap = mutableMapOf<String, FragmentFactory>()
+
+    fun register(type: String, fragmentFactory: FragmentFactory) {
+        fragmentProviderMap[type] = fragmentFactory
+    }
+
+    fun getFragment(type: String): Fragment? {
+        return fragmentProviderMap[type]?.createFragment(type)
+    }
+}
+
+val fragmentFactoryProvider = FragmentFactoryProvider()
+
+fun register() {
+    fragmentFactoryProvider.register("HOME", HomeFragmentFactory())
+    fragmentFactoryProvider.register("PROFILE", ProfileFragmentFactory())
+    fragmentFactoryProvider.register("SETTINGS", SettingFragmentFactory())
+}
+
+fun caller() {
+    val home = fragmentFactoryProvider.getFragment("HOME")
+}
+
+
 
 
 /**
@@ -126,8 +177,10 @@ class FragmentFactoryImpl : FragmentFactory {
  */
 
 /**
- * Adapter design pattern - A structural design pattern used to adapt existing classes so that they work with other classes without having to change their
- * source code.
+ * Adapter design pattern -
+ * A structural design pattern using which we make our existing object work with client by adapting the object to client's expected interface.
+ * Adapter extends new existing object implements old client expected interface
+ *
  * Client uses specific interface.
  * New class does not implement that interface.
  * So if client need to use that new class then client code need to be changed. To avoid that one wrapper class like adapter can be created

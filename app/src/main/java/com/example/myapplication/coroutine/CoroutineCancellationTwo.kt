@@ -14,6 +14,8 @@ import kotlinx.coroutines.runBlocking
  *
  * https://www.udemy.com/course/coroutines-on-android/learn/lecture/22551118#overview
  * NonCancellable is designed for withContext to prevent cancellation of code blocks that need to be executed without cancellation
+ *
+ * https://www.youtube.com/watch?v=VfOQqmCpK7U (Philip one)
  */
 fun main() {
     // #1 : normal cancellation scene

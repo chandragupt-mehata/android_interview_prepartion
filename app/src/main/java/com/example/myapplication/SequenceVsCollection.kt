@@ -15,4 +15,9 @@ fun main() {
     }
     println("${sequenceList === newSequenceList}")
     newSequenceList.all { it > "a" }
+
+    val sequenceOperator =  listOf(12, 1, 5, 43, 67, 4, 56, 9, 89)
+    sequenceOperator.map {
+        println("inside sequenceOperator: $it")
+    }.first()
 }

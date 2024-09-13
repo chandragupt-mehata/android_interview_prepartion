@@ -9,20 +9,19 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.RuntimeException
-import javax.inject.Singleton
+import kotlin.RuntimeException
 
 @FragmentScoped
 class MainViewModel : ViewModel() {
@@ -90,9 +89,9 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    //on back pressed cancelled exception does not get triggered
+    //on back pressed cancelled exception does not get triggered I meant cancellation exception will not propagate to inside launch builder
     //but when delay will be uncommented, cancellation exception will get caught
-    //it meant on back pressed coroutine cancellation will lead to delay to throw cancellation excetion
+    //it meant on back pressed coroutine cancellation will lead to delay function to throw cancellation exception
     //because it's suspend function
     fun checkCancellation() {
         viewModelScope.launch(Dispatchers.Default) {
@@ -101,7 +100,7 @@ class MainViewModel : ViewModel() {
                     while (true) {
                         println("view model: checkCancellation: $bgCounter and isActive: $isActive")
                         Thread.sleep(1000)
-                        //delay(1000)
+                        delay(1000)
                         bgCounter++
                     }
                 } catch (exception: CancellationException) {
@@ -175,5 +174,46 @@ class MainViewModel : ViewModel() {
     }
 
     private var bgCounter = 0
+
+
+    fun checkNonCancellableFlow() {
+        viewModelScope.launch {
+            try {
+                taskOne()
+                taskTwo()
+                withContext(NonCancellable) {
+                    taskThree()
+                }
+            } catch (e: Exception) {
+                println("checkNonCancellableFlow: Exception is: ${e.message}")
+                if (e is CancellationException) {
+                    throw e
+                }
+            }
+            println("checkNonCancellableFlow: Ended")
+        }
+    }
+
+    private suspend fun taskOne() {
+        println("checkNonCancellableFlow: task one got started")
+        delay(2000)
+        println("checkNonCancellableFlow: task one got completed")
+    }
+
+    private suspend fun taskTwo() {
+        println("checkNonCancellableFlow: task two got started")
+        delay(3000)
+        println("checkNonCancellableFlow: task two got completed")
+    }
+
+    // if we will throw CancellationException here then it won't make any difference on withContext(NonCancellable) i.e. that task will not be continued.
+    // But if cancellation exception will come because of back button then that task will get continued, considering that exception will come once that
+    // task get started.
+    private suspend fun taskThree() {
+        println("checkNonCancellableFlow: task three got started")
+        //throw CancellationException("exception in taskOne")
+        delay(5000)
+        println("checkNonCancellableFlow: task three got completed")
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.myapplication.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.multithreading.TaskRunnableFutureWait
 import com.example.myapplication.coroutine.await
 import com.example.myapplication.data.repo.AppRepositoryImpl
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -23,6 +25,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.BufferedReader
@@ -146,17 +149,41 @@ import kotlin.system.measureTimeMillis
  * Domain Layer:
  * Entities: Core business models.
  * Use Cases: Business logic.
+ * Repositories: Data access abstraction.
  *
  * Data Layer:
- * Repositories: Data access abstraction.
  * Data Sources: Actual implementations (e.g., network, database).
  */
+
+/**
+ *
+ * Advantages of SavedStateHandle
+ * Lifecycle-Aware: SavedStateHandle is lifecycle-aware and tied to the ViewModel, which helps in managing state across configuration changes and process death without tightly coupling it to the activity or fragment lifecycle.
+ * Simplified State Management: It simplifies state management by integrating directly with ViewModel, allowing you to manage UI-related state in a single place.
+ * Separation of Concerns: Promotes separation of concerns by keeping UI state management out of activities and fragments.
+ */
+
+/**
+ * Why Avoid Direct Context Passing?
+ * Memory Leaks:
+ *
+ * Activity and Fragment contexts are tied to their respective lifecycles. When an Activity or Fragment is
+ * destroyed (e.g., due to a configuration change like a screen rotation), the ViewModel might still hold a reference to the old context.
+ * This prevents the garbage collector from freeing the memory used by the old Activity or Fragment, leading to a memory leak.
+ * Lifecycle Mismatch:
+ *
+ * The lifecycle of a ViewModel is usually longer than the lifecycle of an Activity or Fragment. The ViewModel is designed to outlive the UI components it
+ * serves, ensuring that the data it manages can survive configuration changes. Passing a short-lived Activity context to a longer-lived ViewModel can
+ * cause unexpected behavior and resource mismanagement.
+ */
+
 class MainViewModel constructor(private val savedStateHandle: SavedStateHandle): ViewModel() {
 
     val appRepository = AppRepositoryImpl()
     var count = 0
     var state = mutableStateOf("state")
     var stateFlow = MutableStateFlow("mutable state flow")
+    var stateFlow2 = MutableStateFlow("mutable state flow2")
     var stateFlowNonMutable: StateFlow<String> = stateFlow
     var sharedFlow = MutableSharedFlow<String>()
     var liveData = MutableLiveData("live data")
@@ -306,12 +333,18 @@ class MainViewModel constructor(private val savedStateHandle: SavedStateHandle):
         }
     }
 
+    /**
+     * if we will use coroutineScope same, inside which we are collecting data then onPause as scope will get canceled since its inside
+     * of repeatOnLifeCycle, this yourFlow method will also get cancelled. It will get started again when app comes on onStart method.
+     * But if scope is diff as below then it will keep on running and also
+     * when app comes from background to foreground, it will trigger yourFLow method call causing multiple subscriptions.
+     */
     fun yourFlow(coroutineScope: CoroutineScope) {
         viewModelScope.launch(Dispatchers.IO) {
             repeat(20) {
                 delay(1000)
                 println("new test simulation : $it: $isActive")
-                stateFlow.emit(it.toString())
+                stateFlow2.emit(it.toString())
             }
         }
     }
@@ -332,22 +365,36 @@ class MainViewModel constructor(private val savedStateHandle: SavedStateHandle):
             viewModelScope.launch {
                 launch {
                     delay(100)
-                    println("#viewModelScope inside viewmode scope 1")
+                    println("#viewModelScope:testWithViewModelScope inside viewmode scope 1")
                 }
                 launch {
                     delay(100)
-                    println("#viewModelScope inside viewmode scope 2")
+                    println("#viewModelScope:testWithViewModelScope inside viewmode scope 2")
                 }
             }
-            println("#viewModelScope after view model scope")
+            println("#viewModelScope:testWithViewModelScope after view model scope")
         }
-        println("#viewModelScope after run blocking")
+        println("#viewModelScope:testWithViewModelScope after run blocking")
     }
 
     fun testParallelDecomposition() {
         viewModelScope.launch {
             appRepository.performParallelTask()
         }
+    }
+
+    var value = "initial"
+
+    /**
+     * only for testing
+     */
+    @VisibleForTesting
+    suspend fun testDispatcher(): String {
+        viewModelScope.launch {
+            delay(1000)
+            value = "updated"
+        }
+        return value
     }
 
     /**
